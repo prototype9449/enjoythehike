@@ -35,22 +35,19 @@ function App() {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <QueryClientProvider client={queryClient}>
-        <Box
-          position="absolute"
-          width="100vw"
-          height="100vh"
-          sx={{
-            backgroundColor: "#6b70b71f",
-          }}
-        >
-          <Box width="1280px" ml="auto" mr="auto" mt="200px">
+        <Box width="100%">
+          <Box width="1280px" ml="auto" mr="auto" mt="200px" mb="200px">
             <WeatherWidget />
             <Box sx={{ bgcolor: "background.paper", width: "100%" }}>
               <Paper elevation={5} sx={{ mb: 2 }}>
                 <BookingTabs value={value} onChange={(v) => setValue(v)} />
               </Paper>
-              {value === 0 && <BookingForm />}
-              {value === 1 && <Trails />}
+              {value === 0 && (
+                <>
+                  <BookingForm />
+                  <Trails />
+                </>
+              )}
             </Box>
           </Box>
         </Box>

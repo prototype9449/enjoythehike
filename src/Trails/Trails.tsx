@@ -1,8 +1,20 @@
-import { Accordion, AccordionDetails, AccordionSummary, Box, Button, Rating, Typography, TypographyProps } from "@mui/material";
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionProps,
+  AccordionSummary,
+  Box,
+  Button,
+  LinearProgress,
+  Rating,
+  styled,
+} from "@mui/material";
 import { IconChevronDown, IconChevronUp } from "@tabler/icons-react";
-import { FC, SyntheticEvent, useState } from "react";
+import { SyntheticEvent, useState } from "react";
 import { TrailLevel } from "../BookingForm/types";
 import { ReactSVG } from "react-svg";
+import { TrailDetails, TrailOption } from './TrailDetails'
+import { Row, ValuePart } from './shared'
 
 export type Trail = {
   name: string;
@@ -15,7 +27,9 @@ export type Trail = {
   priceMax: number;
   priceMin: number;
   hours: number;
+  options: TrailOption[];
 };
+
 const trails: Trail[] = [
   {
     name: "Atalanti Nature Troodos",
@@ -28,27 +42,27 @@ const trails: Trail[] = [
     priceMax: 140,
     priceMin: 90,
     hours: 9,
+    options: [
+      {
+        hotel: {
+          name: "Resort hotel super",
+          price: 80,
+          ratio: 4.6,
+        },
+        date: "25 of July",
+        lunch: {
+          price: 12,
+          dish: "Rice with salmon",
+        },
+        taxi: {
+          type: "comfort",
+          price: 40,
+        },
+      },
+    ],
   },
 ];
 
-const Row: FC<{ name: string; children: any }> = ({ name, children }) => {
-  return (
-    <Box display="flex" alignItems="center" flex={1}>
-      <Typography fontSize="18px" variant="body1" sx={{ mr: 2, color: "black", opacity: "0.6" }} fontWeight={400}>
-        {name}:
-      </Typography>
-      <Box>{children}</Box>
-    </Box>
-  );
-};
-
-const ValuePart = ({ children, ...other }: TypographyProps) => {
-  return (
-    <Typography component="span" fontSize="18px" fontWeight="400" variant={"body1"} {...other}>
-      {children}
-    </Typography>
-  );
-};
 
 const Level = ({ level }: { level: TrailLevel }) => {
   const fill = level === "low" ? "green" : level === "medium" ? "yellow" : "red";
@@ -66,6 +80,27 @@ const Level = ({ level }: { level: TrailLevel }) => {
   );
 };
 
+const TrailOptions = ({ options }: { options: TrailOption[] }) => {
+  const opts = options.map((x) => (
+    <Box>
+      <TrailDetails {...x} />
+    </Box>
+  ));
+  return <Box width="100%">{opts}</Box>;
+};
+
+const MuiAccordion = styled((props: AccordionProps) => (
+  <Accordion disableGutters {...props} />
+))(({ theme }) => ({
+  border: `1px solid ${theme.palette.divider}`,
+  '&:not(:last-child)': {
+    borderBottom: 0,
+  },
+  '&:before': {
+    display: 'none',
+  },
+}));
+
 export const Trails = () => {
   const [expanded, setExpanded] = useState<string | false>(false);
 
@@ -73,27 +108,22 @@ export const Trails = () => {
     setExpanded(isExpanded ? panel : false);
   };
 
-  const trailComps = trails.map(({ name, hours, level, rank, climb, ratio, image, distance, priceMax, priceMin }) => {
+  const trailComps = trails.map(({ name, hours, level, rank, climb, ratio, image, distance, priceMax, priceMin, options }) => {
     return (
-      <Accordion expanded={expanded === name} onChange={handleChange(name)}>
+      <MuiAccordion expanded={expanded === name} onChange={handleChange(name)}>
         <AccordionSummary aria-controls="panel1bh-content" id="panel1bh-header">
           <Box display="flex" justifyContent="space-between" width="100%">
             <img src={image} height="120px" alt={name} />
             <Box ml={5} flex={1} display={"flex"}>
               <Box height="100%" display="flex" flexDirection="column" justifyContent="space-between">
+                <Row name="Name">
+                  <ValuePart fontWeight="bold">{name}</ValuePart>
+                </Row>
                 <Row name="Distance">
                   <ValuePart>{distance} km</ValuePart>
                 </Row>
                 <Row name="Climb">
                   <ValuePart>{climb} m</ValuePart>
-                </Row>
-                <Row name="Rank">
-                  <Box display="flex" alignItems="center">
-                    <ValuePart>
-                      {rank} / {ratio}
-                    </ValuePart>
-                    <Rating sx={{ ml: 1 }} value={ratio} readOnly />
-                  </Box>
                 </Row>
               </Box>
               <Box ml={5} height="100%" display="flex" flexDirection="column" justifyContent="space-between">
@@ -110,11 +140,21 @@ export const Trails = () => {
                   </Box>
                 </Row>
               </Box>
+              <Box ml={5} height="100%" display="flex" flexDirection="column" justifyContent="space-between">
+                <Row name="Rank" flex="0.33">
+                  <Box display="flex" alignItems="center">
+                    <ValuePart>
+                      {rank} / {ratio}
+                    </ValuePart>
+                    <Rating sx={{ ml: 1 }} value={ratio} readOnly />
+                  </Box>
+                </Row>
+              </Box>
             </Box>
             <Box>
               <Button
                 variant="contained"
-                sx={{ marginTop: 'auto', width: "100px", justifyContent: 'space-between'}}
+                sx={{ marginTop: "auto", width: "100px", justifyContent: "space-between" }}
                 endIcon={expanded === name ? <IconChevronUp /> : <IconChevronDown />}
               >
                 {expanded === name ? "Hide" : "Show"}
@@ -123,13 +163,18 @@ export const Trails = () => {
           </Box>
         </AccordionSummary>
         <AccordionDetails>
-          <Typography>
-            Nulla facilisi. Phasellus sollicitudin nulla et quam mattis feugiat. Aliquam eget maximus est, id dignissim quam.
-          </Typography>
+          <TrailOptions options={options} />
         </AccordionDetails>
-      </Accordion>
+      </MuiAccordion>
     );
   });
 
-  return <Box>{trailComps}</Box>;
+  return (
+    <Box>
+      <Box sx={{ width: "100%" }}>
+        <LinearProgress sx={{ height: "5px" }} />
+      </Box>
+      {trailComps}
+    </Box>
+  );
 };

@@ -55,6 +55,7 @@ export const BookingForm = () => {
               size="large"
               type="submit"
               loading={false}
+              disabled
             >
               Continue
             </LoadingButton>

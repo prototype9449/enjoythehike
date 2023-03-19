@@ -23,7 +23,7 @@ export const TodayWidgetCard = memo(
       onOpenClick(place);
     };
 
-    const memoIcon = useMemo(() => <WeatherIcon width={100} id={"clear-day"} animated={true} />, []);
+    const memoIcon = useMemo(() => <WeatherIcon width={100} id={"overcast-day-hail"} animated={true} />, []);
 
     return (
       <Box
