@@ -1,39 +1,48 @@
 import { Box, Button, IconButton, Typography } from "@mui/material";
 import { TrailPlace } from "../BookingForm/types";
 import { WeatherIcon } from "../icons/Icon";
-import { IconFoldDown, IconFoldUp } from "@tabler/icons-react";
-import { WeekWeather } from "./WeekDayWeatherCard";
+import { IconChevronDown, IconChevronUp, IconFoldDown, IconFoldUp } from "@tabler/icons-react";
 import { memo, useMemo } from "react";
 
-type Props = {
+export type TodayWeather = {
   place: TrailPlace;
   temperature: number;
   description: string;
   wind: number;
   humidity: number;
   feelsLike: number;
+  forecast: string;
+};
+
+type Props = {
   isOpened: boolean;
   onOpenClick: (place: TrailPlace) => void;
   shouldGrey: boolean;
-};
+} & TodayWeather;
 
 export const TodayWidgetCard = memo(
-  ({ place, temperature, description, wind, humidity, feelsLike, isOpened, onOpenClick, shouldGrey }: Props) => {
+  ({ place, temperature, forecast, description, wind, humidity, feelsLike, isOpened, onOpenClick, shouldGrey }: Props) => {
     const onClick = () => {
       onOpenClick(place);
     };
 
-    const memoIcon = useMemo(() => <WeatherIcon width={100} id={"overcast-day-hail"} animated={true} />, []);
+    const memoIcon = useMemo(() => <WeatherIcon width={100} id={forecast} animated={true} />, [forecast]);
 
     return (
-      <Box
-        position="relative"
-        flex="1"
-        display="flex"
-        justifyContent="center"
-        flexDirection="column"
-        textAlign="center"
-        alignItems="center"
+      <Button
+        onClick={onClick}
+        fullWidth
+        sx={{
+          color: 'inherit',
+          position: "relative",
+          textTransform: 'none',
+          flex: "1",
+          display: "flex",
+          justifyContent: "center",
+          flexDirection: "column",
+          textAlign: "center",
+          alignItems: "center",
+        }}
       >
         <Box
           position="absolute"
@@ -72,10 +81,10 @@ export const TodayWidgetCard = memo(
             </Box>
           </Box>
         </Box>
-        <Button sx={{ mt: 2 }} onClick={onClick} fullWidth color="primary">
-          {isOpened ? <IconFoldUp size={40} color=" grey" /> : <IconFoldDown size={40} color=" grey" />}
-        </Button>
-      </Box>
+        <Box sx={{ mt: 2 }} width="100%">
+          {isOpened ? <IconChevronUp size={30} color=" grey" /> : <IconChevronDown size={30} color=" grey" />}
+        </Box>
+      </Button>
     );
   }
 );

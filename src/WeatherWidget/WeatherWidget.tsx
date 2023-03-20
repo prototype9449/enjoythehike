@@ -1,12 +1,45 @@
-import { Box, Paper } from "@mui/material";
+import { Box, LinearProgress, Paper, Typography } from "@mui/material";
 import { places } from "../BookingForm/constants";
-import { TodayWidgetCard } from "./TodayWidgetCard";
-import { useCallback, useMemo, useState } from "react";
+import { TodayWeather, TodayWidgetCard } from "./TodayWidgetCard";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { WeekWeather } from "./WeekDayWeatherCard";
 import { TrailPlace } from "../BookingForm/types";
+import { useQuery } from "react-query";
+import { getTodayWeather, getWeekWeather } from "../core/weather";
+
+const ErrorDescription = ({ error }: { error: unknown }) => {
+  return error ? (
+    <Box width="100%" height="100%" display="flex" justifyContent="center" alignItems="center">
+      <Typography variant="h4">Weather is currently not available</Typography>
+    </Box>
+  ) : null;
+};
 
 export const WeatherWidget = () => {
   const [openNum, setOpened] = useState(-1);
+
+  const { isError, data, isFetching, error } = useQuery("today-weather", getTodayWeather, {
+    refetchOnWindowFocus: false,
+    retry: false,
+  });
+
+  const {
+    data: weekData,
+    isFetching: weekIsFetching,
+    refetch: weekRefetch,
+  } = useQuery(
+    ["today-weather", openNum],
+    () => {
+      const city = data?.[openNum].place;
+      // @ts-ignore
+      return getWeekWeather(city);
+    },
+    {
+      refetchOnWindowFocus: false,
+      enabled: false,
+      retry: false,
+    }
+  );
 
   const handleOpenClick = useCallback((place: TrailPlace) => {
     setOpened((num) => {
@@ -18,33 +51,47 @@ export const WeatherWidget = () => {
     });
   }, []);
 
+  useEffect(() => {
+    if (openNum !== -1) {
+      weekRefetch();
+    }
+  }, [openNum]);
+
   const todayWidgets = useMemo(() => {
-    return places.map((p, i) => (
+    return data?.map(({ place, forecast, temperature, description, wind, humidity, feelsLike }, i) => (
       <TodayWidgetCard
         shouldGrey={i !== openNum && openNum > -1}
         isOpened={i === openNum}
         onOpenClick={handleOpenClick}
-        key={p}
-        place={p}
-        description={"clear sky"}
-        feelsLike={30}
-        humidity={20}
-        temperature={12}
-        wind={20}
+        key={place}
+        place={place}
+        description={description}
+        forecast={forecast}
+        feelsLike={feelsLike}
+        humidity={humidity}
+        temperature={temperature}
+        wind={wind}
       />
     ));
-  }, [handleOpenClick, openNum]);
-
-  const weekWidgets = useMemo(() => {
-    return <div></div>;
-  }, []);
+  }, [data, handleOpenClick, openNum]);
 
   return (
-    <Paper sx={{ mb: 2, borderRadius: "16px 16px 0 0", overflow: 'hidden' }}>
-      <Box sx={{ display: "flex" }}>{todayWidgets}</Box>
-      <Box maxHeight={openNum !== -1 ? "400px" : 0} overflow="hidden" sx={{ transition: "max-height 0.25s ease-in" }}>
-        <WeekWeather place={places[openNum]} />
-      </Box>
-    </Paper>
+    <>
+      <LinearProgress sx={{ height: "5px", visibility: isFetching || weekIsFetching ? "visible" : "hidden" }} />
+      <Paper sx={{ mb: 2, borderRadius: "0", overflow: "hidden" }}>
+        <Box sx={{ display: "flex", height: "437px" }}>
+          {isFetching || isError ? (
+            <Box height="437px" width="100%">
+              <ErrorDescription error={error} />
+            </Box>
+          ) : (
+            todayWidgets
+          )}
+        </Box>
+        <Box maxHeight={openNum !== -1 ? "400px" : 0} overflow="hidden" sx={{ transition: "max-height 0.25s ease-in" }}>
+          <WeekWeather data={weekData || []} />
+        </Box>
+      </Paper>
+    </>
   );
 };

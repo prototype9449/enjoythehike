@@ -8,6 +8,7 @@ import { WeatherWidget } from "./WeatherWidget";
 import { BookingForm } from "./BookingForm/BookingForm";
 import { AppBar, Box, Paper, Tab, Tabs } from "@mui/material";
 import { Trails } from "./Trails/Trails";
+import { Bookings } from "./Bookings/Bookings";
 
 const queryClient = new QueryClient();
 
@@ -42,12 +43,8 @@ function App() {
               <Paper elevation={5} sx={{ mb: 2 }}>
                 <BookingTabs value={value} onChange={(v) => setValue(v)} />
               </Paper>
-              {value === 0 && (
-                <>
-                  <BookingForm />
-                  <Trails />
-                </>
-              )}
+              {value === 0 && <BookingForm />}
+              {value === 1 && <Bookings />}
             </Box>
           </Box>
         </Box>

@@ -5,14 +5,19 @@ import { useMemo } from "react";
 
 type WeekDayWeatherCardProps = {
   weekDay: string;
-  temperatureDay: number;
-  temperatureNight: number;
+  temperature: {
+    day: number;
+    night: number;
+  };
   icon: string;
+  date: string;
 };
-const WeekDayWeatherCard = ({ weekDay, temperatureDay, temperatureNight, icon }: WeekDayWeatherCardProps) => {
+const WeekDayWeatherCard = ({ weekDay, temperature, date, icon }: WeekDayWeatherCardProps) => {
   return (
     <Box pt={2} width="100%" display="flex" alignItems="center" flexDirection="column">
-      <Typography variant="h5">{weekDay}</Typography>
+      <Typography variant="h6">
+        {weekDay} {date}
+      </Typography>
       <Box mt={1} mb={1} mr={2} ml={2}>
         <WeatherIcon width={50} id={icon} animated={false} />
       </Box>
@@ -27,7 +32,7 @@ const WeekDayWeatherCard = ({ weekDay, temperatureDay, temperatureNight, icon }:
         }}
       >
         <Typography color="black" variant="body1">
-          {temperatureDay}°C
+          {temperature.day}°C
         </Typography>
       </Box>
       <Box
@@ -41,7 +46,7 @@ const WeekDayWeatherCard = ({ weekDay, temperatureDay, temperatureNight, icon }:
         }}
       >
         <Typography color="white" variant="body1">
-          {temperatureNight}°C
+          {temperature.night}°C
         </Typography>
       </Box>
     </Box>
@@ -49,45 +54,21 @@ const WeekDayWeatherCard = ({ weekDay, temperatureDay, temperatureNight, icon }:
 };
 
 type WeekWeatherProps = {
-  place: TrailPlace;
+  data: WeekWeatherPayload[];
 };
 
-function generateRandomInteger(min: number, max: number) {
-  return Math.floor(Math.random() * (max - min)) + min;
-}
+export type WeekWeatherPayload = {
+  date: string;
+  weekDay: string;
+  temperature: { day: number; night: number };
+  icon: string;
+};
 
-const icons = [
-  "clear-day",
-  "extreme-day",
-  "extreme-fog",
-  "fog-day",
-  "overcast-day",
-  "partly-cloudy-day",
-  "thunderstorms-day",
-  "thunderstorms-day-rain",
-];
-
-const getTemp = () => generateRandomInteger(20, 30);
-const getIcon = () => icons[generateRandomInteger(0, icons.length - 1)];
-
-const getData = () => [
-  { weekDay: "Monday", temperatureDay: getTemp(), temperatureNight: getTemp(), icon: getIcon() },
-  { weekDay: "Tuesday", temperatureDay: getTemp(), temperatureNight: getTemp(), icon: getIcon() },
-  { weekDay: "Wednesday", temperatureDay: getTemp(), temperatureNight: getTemp(), icon: getIcon() },
-  { weekDay: "Thursday", temperatureDay: getTemp(), temperatureNight: getTemp(), icon: getIcon() },
-  { weekDay: "Friday", temperatureDay: getTemp(), temperatureNight: getTemp(), icon: getIcon() },
-  { weekDay: "Saturday", temperatureDay: getTemp(), temperatureNight: getTemp(), icon: getIcon() },
-  { weekDay: "Sunday", temperatureDay: getTemp(), temperatureNight: getTemp(), icon: getIcon() },
-];
-
-export const WeekWeather = ({ place }: WeekWeatherProps) => {
-  const data = useMemo(() => {
-    return getData();
-  }, [place]);
-
+export const WeekWeather = ({ data }: WeekWeatherProps) => {
   const lines = [...new Array(6)].map((x, i) => (
     <Box
       width="1px"
+      key={i}
       sx={{
         backgroundColor: "lightgrey",
         position: "absolute",
