@@ -1,12 +1,11 @@
 import { Box, LinearProgress, Paper, Typography } from "@mui/material";
 
-import { places } from "../BookingForm/constants";
-import { TodayWeather, TodayWidgetCard } from "./TodayWidgetCard";
+import { TodayWidgetCard } from "./TodayWidgetCard";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { WeekWeather } from "./WeekDayWeatherCard";
-import { TrailPlace } from "../BookingForm/types";
 import { useQuery, useIsFetching } from "react-query";
 import { getTodayWeather, getWeekWeather } from "../core/weather";
+import { places, TrailPlace } from '../types'
 
 const ErrorDescription = ({ error }: { error: unknown }) => {
   return error ? (

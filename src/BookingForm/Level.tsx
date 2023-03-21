@@ -1,6 +1,6 @@
 import { Controller, useFormContext } from 'react-hook-form'
-import { BookingFormValue } from './types'
 import { Checkbox, FormControl, FormControlLabel, Slider } from '@mui/material'
+import { BookingFormValue } from '../types'
 
 const levels = [
   {

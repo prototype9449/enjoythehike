@@ -1,11 +1,8 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import { AppService } from './app.service';
 import { waitForMs } from './utils';
-
-export class BookTrail {
-  trailId: string;
-  optionId: string;
-}
+import { BookTrail } from './types';
+import { TrailPlace } from '../../src/types';
 
 @Controller('weather')
 export class AppController {
@@ -24,9 +21,11 @@ export class AppController {
   }
 
   @Get('/week')
-  async getWeekWeather(): Promise<Record<string, any>> {
+  async getWeekWeather(
+    @Query('city') city: TrailPlace,
+  ): Promise<Record<string, any>> {
     await waitForMs(1500);
-    return this.appService.getWeekWeather();
+    return this.appService.getWeekWeather(city);
   }
 
   @Get('/bookings')

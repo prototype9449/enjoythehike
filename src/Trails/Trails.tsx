@@ -5,33 +5,17 @@ import {
   AccordionSummary,
   Box,
   Button,
-  LinearProgress,
   Rating,
   styled,
   Typography,
 } from "@mui/material";
 import { IconChevronDown, IconChevronUp } from "@tabler/icons-react";
 import { SyntheticEvent, useState } from "react";
-import { TrailLevel } from "../BookingForm/types";
 import { ReactSVG } from "react-svg";
-import { TrailDetails, TrailOption } from "./TrailDetails";
+import { TrailDetails } from "./TrailDetails";
 import { Row, ValuePart } from "./shared";
 import { useGetTrails } from "../core/queries/useGetTrails";
-
-export type Trail = {
-  trailId: string
-  name: string;
-  distance: number;
-  climb: number;
-  rank: number;
-  ratio: number;
-  level: TrailLevel;
-  image: string;
-  priceMax: number;
-  priceMin: number;
-  hours: number;
-  options: TrailOption[];
-};
+import { TrailLevel, TrailOption } from '../types'
 
 const Level = ({ level }: { level: TrailLevel }) => {
   const fill = level === "low" ? "green" : level === "medium" ? "yellow" : "red";
@@ -50,8 +34,8 @@ const Level = ({ level }: { level: TrailLevel }) => {
 };
 
 const TrailOptions = ({ name, trailId, options }: { options: TrailOption[], trailId: string, name: string }) => {
-  const opts = options.map((x) => (
-    <Box key={`${trailId}_${x.optionId}`} borderTop="1px solid lightgrey" pt={2} pb={2}>
+  const opts = options.map((x, i) => (
+    <Box key={`${trailId}_${x.optionId}`} borderTop={i !== 0 ? "1px solid lightgrey" : ''} pt={2} pb={2} ml={4}>
       <TrailDetails {...x} trailName={name} trailId={trailId}/>
     </Box>
   ));

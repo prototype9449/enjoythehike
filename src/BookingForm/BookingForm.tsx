@@ -1,6 +1,5 @@
 import { Box, Paper } from "@mui/material";
 import { useForm, FormProvider } from "react-hook-form";
-import { BookingFormValue } from "./types";
 import { MostlyPath } from "./MostlyPath";
 import { Range } from "./Range";
 import { Level } from "./Level";
@@ -10,6 +9,7 @@ import dayjs from "dayjs";
 import React, { useEffect, useState } from "react";
 import { useGetTrails } from "../core/queries/useGetTrails";
 import { Trails } from "../Trails/Trails";
+import { BookingFormValue } from '../types'
 
 export const BookingForm = () => {
   const methods = useForm<BookingFormValue>({

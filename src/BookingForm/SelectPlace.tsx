@@ -1,8 +1,7 @@
 import { Controller, useFormContext } from 'react-hook-form'
-import { BookingFormValue } from './types'
 import { useMemo } from 'react'
-import { places } from './constants'
 import { FormControl, FormHelperText, InputLabel, MenuItem, Select } from '@mui/material'
+import { BookingFormValue, places } from '../types'
 
 export const SelectPlace = () => {
   const {

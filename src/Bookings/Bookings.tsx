@@ -1,6 +1,7 @@
 import { Box, Button, CircularProgress, LinearProgress, Paper, Typography } from "@mui/material";
 import { useQuery } from "react-query";
 import { findTrails, getBookings } from "../core/trail";
+import { BookedTrail } from '../types'
 
 const NoBookings = () => {
   return (
@@ -10,34 +11,6 @@ const NoBookings = () => {
   );
 };
 
-export type TrailStatus = "booked" | "waiting" | "canceled"
-export type BookedTrail = {
-  trailId: string
-  optionId: string
-  name: string;
-  status: TrailStatus;
-  image: string;
-  cost: number;
-  date: string;
-  taxi: {
-    number: string;
-    price: number;
-    arrive: string;
-  };
-  lunch: {
-    pick: string;
-    dish: string;
-    price: number;
-  };
-  hotel: {
-    price: number;
-    name: string;
-    checkIn: string;
-    checkOut: string;
-    dateStart: string;
-    dateEnd: string;
-  };
-};
 
 const Details = ({ cost, hotel, lunch, taxi }: Pick<BookedTrail, "taxi" | "hotel" | "lunch" | "cost">) => {
   return (

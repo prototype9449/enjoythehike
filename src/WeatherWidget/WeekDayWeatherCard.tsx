@@ -1,7 +1,5 @@
-import { TrailPlace } from "../BookingForm/types";
 import { Box, Typography } from "@mui/material";
 import { WeatherIcon } from "../icons/Icon";
-import { useMemo } from "react";
 
 type WeekDayWeatherCardProps = {
   weekDay: string;

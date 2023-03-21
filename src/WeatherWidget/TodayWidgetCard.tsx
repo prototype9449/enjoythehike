@@ -1,18 +1,8 @@
 import { Box, Button, IconButton, Typography } from "@mui/material";
-import { TrailPlace } from "../BookingForm/types";
 import { WeatherIcon } from "../icons/Icon";
 import { IconChevronDown, IconChevronUp, IconFoldDown, IconFoldUp } from "@tabler/icons-react";
 import { memo, useMemo } from "react";
-
-export type TodayWeather = {
-  place: TrailPlace;
-  temperature: number;
-  description: string;
-  wind: number;
-  humidity: number;
-  feelsLike: number;
-  forecast: string;
-};
+import { TodayWeather, TrailPlace } from '../types'
 
 type Props = {
   isOpened: boolean;

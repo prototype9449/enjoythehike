@@ -6,26 +6,11 @@ import { bookTrail } from "../core/trail";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { useEffect } from "react";
 import { useSnackbar } from 'notistack';
+import { TrailOption } from '../types'
 
-export type TrailOption = {
-  optionId: string;
-  taxi: {
-    type: string;
-    price: number;
-  };
-  lunch: {
-    price: number;
-    dish: string;
-  };
-  hotel: {
-    name: string;
-    price: number;
-    ratio: number;
-  };
-  date: string;
-};
+type Props = TrailOption & { trailName: string, trailId: string }
 
-export const TrailDetails = ({ trailName, taxi, lunch, hotel, date, trailId, optionId }: TrailOption & { trailName: string, trailId: string }) => {
+export const TrailDetails = ({ trailName, taxi, lunch, hotel, date, trailId, optionId }: Props) => {
   const { isFetching, isFetched, data, refetch } = useQuery(["order-trail", trailId, optionId], () => bookTrail({ trailId, optionId }), {
     refetchOnWindowFocus: false,
     enabled: false,

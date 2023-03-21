@@ -1,6 +1,6 @@
 import { Controller, useFormContext } from 'react-hook-form'
 import { Checkbox, FormControl, FormControlLabel, FormHelperText } from '@mui/material'
-import { BookingFormValue } from './types'
+import { BookingFormValue } from '../types'
 
 export const MostlyPath = () => {
   const {

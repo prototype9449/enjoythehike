@@ -1,9 +1,9 @@
 import { Controller, useFormContext } from 'react-hook-form'
-import { BookingFormValue } from './types'
 import { Checkbox, FormControl, FormControlLabel } from '@mui/material'
 import { DateRangePicker } from '@mui/x-date-pickers-pro/DateRangePicker';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import dayjs, { Dayjs } from 'dayjs'
+import { BookingFormValue } from '../types'
 
 const getValue = (value: string) => {
   const s = value.split('$') as [string, string]
