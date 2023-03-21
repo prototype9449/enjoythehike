@@ -39,7 +39,6 @@ export const BookingForm = () => {
 
   return (
     <>
-      {" "}
       <FormProvider {...methods}>
         <form method="GET" onSubmit={handleSubmit(onSubmit, (...err) => console.warn(err))}>
           <Box display="flex" flexDirection="row" alignItems="center" justifyContent="space-between" p={2}>

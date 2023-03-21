@@ -19,6 +19,7 @@ import { Row, ValuePart } from "./shared";
 import { useGetTrails } from "../core/queries/useGetTrails";
 
 export type Trail = {
+  trailId: string
   name: string;
   distance: number;
   climb: number;
@@ -48,10 +49,10 @@ const Level = ({ level }: { level: TrailLevel }) => {
   );
 };
 
-const TrailOptions = ({ options }: { options: TrailOption[] }) => {
+const TrailOptions = ({ name, trailId, options }: { options: TrailOption[], trailId: string, name: string }) => {
   const opts = options.map((x) => (
-    <Box>
-      <TrailDetails {...x} />
+    <Box key={`${trailId}_${x.optionId}`} borderTop="1px solid lightgrey" pt={2} pb={2}>
+      <TrailDetails {...x} trailName={name} trailId={trailId}/>
     </Box>
   ));
   return <Box width="100%">{opts}</Box>;
@@ -78,11 +79,11 @@ export const Trails = ({ formPayload }: Props) => {
     setExpanded(isExpanded ? panel : false);
   };
 
-  const { isFetching, data, isFetched } = useGetTrails(formPayload);
+  const { data, isFetched } = useGetTrails(formPayload);
 
-  const trailComps = data?.map(({ name, hours, level, rank, climb, ratio, image, distance, priceMax, priceMin, options }) => {
+  const trailComps = data?.map(({ trailId, name, hours, level, rank, climb, ratio, image, distance, priceMax, priceMin, options }) => {
     return (
-      <MuiAccordion expanded={expanded === name} onChange={handleChange(name)}>
+      <MuiAccordion key={trailId} expanded={expanded === name} onChange={handleChange(name)}>
         <AccordionSummary aria-controls="panel1bh-content" id="panel1bh-header">
           <Box display="flex" justifyContent="space-between" width="100%">
             <Box height="120px" width="180px"><img src={image} height="100%" alt={name} /></Box>
@@ -135,7 +136,7 @@ export const Trails = ({ formPayload }: Props) => {
           </Box>
         </AccordionSummary>
         <AccordionDetails>
-          <TrailOptions options={options} />
+          <TrailOptions name={name} options={options} trailId={trailId}/>
         </AccordionDetails>
       </MuiAccordion>
     );
@@ -143,9 +144,6 @@ export const Trails = ({ formPayload }: Props) => {
 
   return (
     <Box>
-      <Box sx={{ width: "100%" }}>
-        <LinearProgress sx={{ height: "5px", visibility: isFetching ? "visible" : "hidden" }} />
-      </Box>
       {data?.length || !isFetched ? (
         trailComps
       ) : (

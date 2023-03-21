@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { BookTrail } from './app.controller';
 
 const data = [
   {
@@ -32,6 +33,7 @@ const data = [
 
 const trails = [
   {
+    trailId: 'atalanti1',
     name: 'Atalanti Nature Troodos',
     climb: 133,
     ratio: 4.7,
@@ -44,6 +46,7 @@ const trails = [
     hours: 9,
     options: [
       {
+        optionId: 'atlanti1_1',
         hotel: {
           name: 'Resort hotel super',
           price: 80,
@@ -57,6 +60,40 @@ const trails = [
         taxi: {
           type: 'comfort',
           price: 40,
+        },
+      },
+      {
+        optionId: 'atlanti1_2',
+        hotel: {
+          name: 'Resort hotel super',
+          price: 90,
+          ratio: 3,
+        },
+        date: '29 of July',
+        lunch: {
+          price: 10,
+          dish: 'Beef with makaroni',
+        },
+        taxi: {
+          type: 'economy',
+          price: 20,
+        },
+      },
+      {
+        optionId: 'atlanti1_3',
+        hotel: {
+          name: 'Square hotel beach',
+          price: 70,
+          ratio: 4,
+        },
+        date: '27 of July',
+        lunch: {
+          price: 10,
+          dish: 'Big fried pie',
+        },
+        taxi: {
+          type: 'comfort',
+          price: 30,
         },
       },
     ],
@@ -128,25 +165,52 @@ const getData = () => [
 
 const bookings = [
   {
+    trailId: 'atlanti1',
+    optionId: 'atlanti1_2',
+    status: 'booked',
     name: 'Atalanti Nature Troodos',
-    climb: 133,
-    ratio: 4.7,
-    distance: 13.92,
-    level: 'hard',
-    rank: 85,
     image: '/atalanti.jpeg',
-    cost: 125,
-    hours: 9,
+    cost: 152,
     date: '25 of July',
     taxi: {
       number: 'NPK123',
       arrive: '9:31',
+      price: 40,
     },
     lunch: {
       pick: '11:20',
       dish: 'Rice with salmon',
+      price: 12,
     },
     hotel: {
+      price: 100,
+      name: 'Resort hotel super',
+      checkIn: '14:00',
+      checkOut: '12:00',
+      dateStart: '25 of July',
+      dateEnd: '26 of July',
+    },
+  },
+  {
+    trailId: 'atlanti1',
+    optionId: 'atlanti1_3',
+    status: 'waiting',
+    name: 'Atalanti Nature Troodos',
+    image: '/atalanti.jpeg',
+    cost: 152,
+    date: '21 of July',
+    taxi: {
+      number: 'NPK123',
+      arrive: '9:31',
+      price: 40,
+    },
+    lunch: {
+      pick: '11:20',
+      dish: 'Rice with salmon',
+      price: 12,
+    },
+    hotel: {
+      price: 100,
       name: 'Resort hotel super',
       checkIn: '14:00',
       checkOut: '12:00',
@@ -172,5 +236,11 @@ export class AppService {
 
   getBookings(): any {
     return bookings;
+  }
+
+  bookTrail(trailToBook: BookTrail): any {
+    return {
+      status: 'success',
+    };
   }
 }

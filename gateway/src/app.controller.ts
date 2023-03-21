@@ -1,6 +1,11 @@
-import { Controller, Get } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { AppService } from './app.service';
 import { waitForMs } from './utils';
+
+export class BookTrail {
+  trailId: string;
+  optionId: string;
+}
 
 @Controller('weather')
 export class AppController {
@@ -28,5 +33,11 @@ export class AppController {
   async getBookings(): Promise<Record<string, any>> {
     await waitForMs(1500);
     return this.appService.getBookings();
+  }
+
+  @Post('/trail')
+  async bookTrail(@Body() body: BookTrail): Promise<Record<string, any>> {
+    await waitForMs(1500);
+    return this.appService.bookTrail(body);
   }
 }

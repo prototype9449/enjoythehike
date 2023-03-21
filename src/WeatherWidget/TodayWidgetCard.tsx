@@ -57,27 +57,27 @@ export const TodayWidgetCard = memo(
             opacity: shouldGrey ? 0.3 : 1,
           }}
         />
-        <Box minWidth="300px" p={4} pb={0}>
-          <Box mb={2} justifyContent="center">
-            <Typography variant="h3">{place}</Typography>
+        <Box minWidth="300px" p={2} pb={0}>
+          <Box mb={1} justifyContent="center">
+            <Typography variant="h4">{place}</Typography>
           </Box>
           <Box>{memoIcon}</Box>
           <Box m={2}>
-            <Typography variant="h4">{temperature}°C</Typography>
-            <Typography variant="h5">{description}</Typography>
+            <Typography variant="h5">{temperature}°C</Typography>
+            <Typography variant="h6">{description}</Typography>
           </Box>
           <Box display="flex" flexDirection="row" justifyContent="space-between">
             <Box>
               <Typography variant="body1">Wind</Typography>
-              <Typography variant="h5">{wind} fps</Typography>
+              <Typography variant="h6">{wind} fps</Typography>
             </Box>
             <Box>
               <Typography variant="body1">Humidity</Typography>
-              <Typography variant="h5">{humidity}%</Typography>
+              <Typography variant="h6">{humidity}%</Typography>
             </Box>
             <Box>
               <Typography variant="body1">Feels like</Typography>
-              <Typography variant="h5">{feelsLike}°C</Typography>
+              <Typography variant="h6">{feelsLike}°C</Typography>
             </Box>
           </Box>
         </Box>

@@ -6,9 +6,17 @@ import { BookedTrail } from "../Bookings/Bookings";
 
 type BookTrailPayload = {
   trailId: string;
+  optionId: string
 };
 
-export const bookTrail = (payload: BookTrailPayload) => {
+export type TrailBookingStatus = 'success' | 'inProcess' | 'error'
+
+export type BookedTrailResponse = {
+  status: TrailBookingStatus
+  error?: string
+}
+
+export const bookTrail = (payload: BookTrailPayload): Promise<BookedTrailResponse> => {
   return axiosInstance.post(`http://localhost:3002/weather/trail`, payload).then((x) => x.data);
 };
 

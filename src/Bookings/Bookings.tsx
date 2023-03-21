@@ -1,4 +1,4 @@
-import { Box, Button, LinearProgress, Paper, Typography } from "@mui/material";
+import { Box, Button, CircularProgress, LinearProgress, Paper, Typography } from "@mui/material";
 import { useQuery } from "react-query";
 import { findTrails, getBookings } from "../core/trail";
 
@@ -10,26 +10,27 @@ const NoBookings = () => {
   );
 };
 
+export type TrailStatus = "booked" | "waiting" | "canceled"
 export type BookedTrail = {
+  trailId: string
+  optionId: string
   name: string;
-  climb: number;
-  ratio: number;
-  distance: number;
-  level: string;
-  rank: number;
+  status: TrailStatus;
   image: string;
   cost: number;
-  hours: number;
   date: string;
   taxi: {
     number: string;
+    price: number;
     arrive: string;
   };
   lunch: {
     pick: string;
     dish: string;
+    price: number;
   };
   hotel: {
+    price: number;
     name: string;
     checkIn: string;
     checkOut: string;
@@ -38,72 +39,119 @@ export type BookedTrail = {
   };
 };
 
+const Details = ({ cost, hotel, lunch, taxi }: Pick<BookedTrail, "taxi" | "hotel" | "lunch" | "cost">) => {
+  return (
+    <>
+      <Typography variant="body1" mb={0.5}>
+        {hotel.dateStart} {hotel.checkIn} — {hotel.dateEnd} {hotel.checkOut}
+        <Typography component={"a"} href="#ffd" sx={{ ml: 1 }} variant="body1" fontWeight={"bold"}>
+          {hotel.name}
+        </Typography>
+      </Typography>
+      <Typography variant="body1" mb={0.5}>
+        Your lunch is{" "}
+        <Typography component="span" fontWeight="bold">
+          {lunch.dish}
+        </Typography>
+        . Pick it at {lunch.pick}
+      </Typography>
+      <Typography variant="body1">
+        Taxi will pick you at{" "}
+        <Typography component="span" fontWeight="bold">
+          {taxi.arrive}
+        </Typography>
+        . Plate number is {taxi.number}
+      </Typography>
+    </>
+  );
+};
+
+const PriceInformation = ({ cost, hotel, lunch, taxi }: Pick<BookedTrail, "taxi" | "hotel" | "lunch" | "cost">) => {
+  return (
+    <Box width={"auto"} sx={{ ml: 4, pl: 2, pr: 2 }}>
+      <Typography variant="h6" mb={1}>
+        The final cost is <Price price={cost} />
+      </Typography>
+      <Typography variant="body1">
+        <Price price={cost} /> = (Taxi)
+        <Price price={taxi.price} /> + (Hotel)
+        <Price price={hotel.price} /> + (Lunch)
+        <Price price={lunch.price} />
+      </Typography>
+    </Box>
+  );
+};
+
+const Price = ({ price }: { price: number }) => (
+  <Typography component="span" fontWeight="bold" variant="body1">
+    {price}$
+  </Typography>
+);
+
+const TrailStatus = ({ status }: Pick<BookedTrail, "status">) => {
+  const text = status === "waiting" ? "Booking" : status === "canceled" ? "Canceled" : "Confirmed";
+  const color = status === "waiting" ? "lightgrey" : status === "canceled" ? "red" : "green";
+
+  return (
+    <Box display={"flex"} alignItems="center">
+      {status === "waiting" && <CircularProgress size={24} sx={{ mr: 3 }} />}
+      <Typography mt={"auto"} component="span" variant="h5" color={color}>
+        {text}
+      </Typography>
+    </Box>
+  );
+};
+
+const WaitingStatus = () => {
+  return (
+    <Box width={"auto"} mt={"auto"} display="flex">
+      <Typography variant="h6">The booking is in process</Typography>
+    </Box>
+  );
+};
+
 export const Bookings = () => {
-  const { data, error, isFetching, isFetched } = useQuery(["bookings"], getBookings, {
+  const { data, error, isFetched } = useQuery(["bookings"], getBookings, {
     refetchOnWindowFocus: false,
     retry: false,
   });
 
-  const bookings = data?.map(({ name, date, cost, hotel, hours, climb, image, level, lunch, rank, taxi, ratio, distance }) => {
+  const bookings = data?.map(({ trailId, optionId, name, date, status, cost, hotel, image, lunch, taxi }) => {
     return (
-      <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
+      <Paper
+        key={`${trailId}_${optionId}_${date}_${status}`}
+        sx={{
+          p: 2,
+          display: "flex",
+          flexDirection: "column",
+          backgroundColor: status === "canceled" ? "#dedfe0" : "initial",
+        }}
+      >
         <Box display="flex" justifyContent={"space-between"}>
           <Box display={"flex"}>
             <Box width="180px" height="120px">
               <img src={image} height="100%" alt={name} />
             </Box>
-            <Box pl={2}>
+            <Box pl={2} display="flex" flexDirection="column" height="100%">
               <Typography variant="h5" mb={1}>
                 {name}
                 <Typography sx={{ ml: 1 }} component="span" variant="body1">
                   ({date})
                 </Typography>
               </Typography>
-              <Typography variant="body1">
-                {hotel.dateStart} {hotel.checkIn} — {hotel.dateEnd} {hotel.checkOut}
-                <Typography component={"a"} href="#ffd" sx={{ ml: 1 }} variant="body1" fontWeight={"bold"}>
-                  {hotel.name}
-                </Typography>
-              </Typography>
-              <Typography variant="body1">
-                Your lunch is{" "}
-                <Typography component="span" fontWeight="bold">
-                  {lunch.dish}
-                </Typography>
-                . Pick it at {lunch.pick}
-              </Typography>
-              <Typography variant="body1">
-                Taxi will pick you at{" "}
-                <Typography component="span" fontWeight="bold">
-                  {taxi.arrive}
-                </Typography>
-                . Plate number is {taxi.number}
-              </Typography>
+              {status === "booked" && <Details {...{ cost, taxi, hotel, lunch }} />}
+              {status === "waiting" && <WaitingStatus />}
             </Box>
+            {status === "booked" && <PriceInformation {...{ cost, taxi, hotel, lunch }} />}
           </Box>
-          <Box>
-            <Button variant="contained">Cancel</Button>
+          <Box display="flex" flexDirection="column" justifyContent={"space-between"}>
+            <Box ml="auto">{status !== "canceled" && <Button variant="contained">Cancel</Button>}</Box>
+            <TrailStatus status={status} />
           </Box>
-        </Box>
-        <Box>
-          <Typography sx={{ mt: 2 }} variant="body1">
-            The final cost is{" "}
-            <Typography component="span" fontWeight="bold" variant="body1">
-              {cost}$
-            </Typography>
-            . Don't forget to take a credit card.
-          </Typography>
         </Box>
       </Paper>
     );
   });
 
-  return (
-    <Box width="100%" minHeight="300px">
-      <Box sx={{ width: "100%" }}>
-        <LinearProgress sx={{ height: "5px", visibility: isFetching ? "visible" : "hidden" }} />
-      </Box>
-      {bookings}
-    </Box>
-  );
+  return <Box width="100%">{bookings}</Box>;
 };

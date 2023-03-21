@@ -1,10 +1,11 @@
 import { Box, LinearProgress, Paper, Typography } from "@mui/material";
+
 import { places } from "../BookingForm/constants";
 import { TodayWeather, TodayWidgetCard } from "./TodayWidgetCard";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { WeekWeather } from "./WeekDayWeatherCard";
 import { TrailPlace } from "../BookingForm/types";
-import { useQuery } from "react-query";
+import { useQuery, useIsFetching } from "react-query";
 import { getTodayWeather, getWeekWeather } from "../core/weather";
 
 const ErrorDescription = ({ error }: { error: unknown }) => {
@@ -18,17 +19,17 @@ const ErrorDescription = ({ error }: { error: unknown }) => {
 export const WeatherWidget = () => {
   const [openNum, setOpened] = useState(-1);
 
-  const { isError, data, isFetching, error } = useQuery("today-weather", getTodayWeather, {
+  const { isError, data, error, isFetched } = useQuery("today-weather", getTodayWeather, {
     refetchOnWindowFocus: false,
     retry: false,
   });
 
   const {
     data: weekData,
-    isFetching: weekIsFetching,
+    //isFetching: weekIsFetching,
     refetch: weekRefetch,
   } = useQuery(
-    ["today-weather", openNum],
+    ["week-weather", openNum],
     () => {
       const city = data?.[openNum].place;
       // @ts-ignore
@@ -75,13 +76,15 @@ export const WeatherWidget = () => {
     ));
   }, [data, handleOpenClick, openNum]);
 
+  const isFetching = useIsFetching({ predicate: (q) => ["week-weather", "today-weather"].some((x) => q.queryKey.includes(x)) });
+
   return (
     <>
-      <LinearProgress sx={{ height: "5px", visibility: isFetching || weekIsFetching ? "visible" : "hidden" }} />
+      <LinearProgress sx={{ height: "5px", visibility: isFetching ? "visible" : "hidden" }} />
       <Paper sx={{ mb: 2, borderRadius: "0", overflow: "hidden" }}>
-        <Box sx={{ display: "flex", height: "437px" }}>
-          {isFetching || isError ? (
-            <Box height="437px" width="100%">
+        <Box sx={{ display: "flex", height: "391px" }}>
+          {(isFetching && !isFetched) || isError ? (
+            <Box height="391px" width="100%">
               <ErrorDescription error={error} />
             </Box>
           ) : (

@@ -1,8 +1,14 @@
-import { Box, Button } from '@mui/material'
-import { IconCircleCheck } from '@tabler/icons-react'
+import { Box, Button, Link } from "@mui/material";
+import { IconCircleCheck } from "@tabler/icons-react";
+import { useQuery } from "react-query";
 import { Row, ValuePart } from "./shared";
+import { bookTrail } from "../core/trail";
+import LoadingButton from "@mui/lab/LoadingButton";
+import { useEffect } from "react";
+import { useSnackbar } from 'notistack';
 
 export type TrailOption = {
+  optionId: string;
   taxi: {
     type: string;
     price: number;
@@ -19,7 +25,22 @@ export type TrailOption = {
   date: string;
 };
 
-export const TrailDetails = ({ taxi, lunch, hotel, date }: TrailOption) => {
+export const TrailDetails = ({ trailName, taxi, lunch, hotel, date, trailId, optionId }: TrailOption & { trailName: string, trailId: string }) => {
+  const { isFetching, isFetched, data, refetch } = useQuery(["order-trail", trailId, optionId], () => bookTrail({ trailId, optionId }), {
+    refetchOnWindowFocus: false,
+    enabled: false,
+  });
+  const { enqueueSnackbar } = useSnackbar();
+
+  useEffect(() => {
+    if(!isFetched || !data) {
+      return
+    }
+    if(data.status === 'success'){
+      enqueueSnackbar(`You booked a trail ${trailName}`, { variant: 'success' })
+    }
+  }, [data, enqueueSnackbar, isFetched, trailName])
+
   return (
     <Box width="100%" display="flex" alignItems="center" justifyContent="space-between">
       <Box display="flex">
@@ -31,7 +52,11 @@ export const TrailDetails = ({ taxi, lunch, hotel, date }: TrailOption) => {
           <ValuePart>{taxi.price}$</ValuePart>
         </Row>
         <Row name="Hotel" mr={3} flex="initial">
-          <ValuePart mr={1}>{hotel.name}</ValuePart>
+          <ValuePart mr={1}>
+            <Link href="#" underline="none">
+              {hotel.name}
+            </Link>
+          </ValuePart>
           <ValuePart mr={1}>{hotel.ratio}</ValuePart>
           <ValuePart>{hotel.price}$</ValuePart>
         </Row>
@@ -41,9 +66,9 @@ export const TrailDetails = ({ taxi, lunch, hotel, date }: TrailOption) => {
         </Row>
       </Box>
       <Box>
-        <Button variant="contained" endIcon={<IconCircleCheck />}>
+        <LoadingButton loading={isFetching} variant="contained" endIcon={<IconCircleCheck />} onClick={() => refetch()}>
           Order
-        </Button>
+        </LoadingButton>
       </Box>
     </Box>
   );
