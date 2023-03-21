@@ -1,6 +1,6 @@
 import { useQuery } from 'react-query'
 import { findTrails } from '../trail'
-import { BookingFormValue } from '../../types'
+import { BookingFormValue } from '../../../gateway/src/types'
 
 export const useGetTrails = (payload?: BookingFormValue) => {
   // @ts-ignore

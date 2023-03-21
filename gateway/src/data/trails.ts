@@ -1,6 +1,6 @@
 import { addTrailToBookings } from './bookings';
-import { Trail } from '../../../src/types';
-import { BookTrail } from 'src/types';
+import { BookedTrailResponse, Trail, TrailStatus } from '../types';
+import { BookTrail } from '../types';
 
 export const trails: Trail[] = [
   {
@@ -71,12 +71,27 @@ export const trails: Trail[] = [
   },
 ];
 
-export const bookTrail = (trail: BookTrail): void => {
+export const bookTrail = (trail: BookTrail): BookedTrailResponse => {
   const foundTrail = trails.find((x) => x.trailId === trail.trailId);
 
   const foundOption = foundTrail.options.find(
     (x) => x.optionId === trail.optionId,
   );
 
-  addTrailToBookings(foundTrail, foundOption, 'waiting');
+  let status: TrailStatus;
+  if (trail.trailId === 'atalanti1') {
+    status = 'waiting';
+  }
+
+  const bookedTrail = addTrailToBookings(foundTrail, foundOption, status);
+
+  if (status === 'waiting') {
+    setTimeout(() => {
+      bookedTrail.status = 'booked';
+    }, 5000);
+  }
+
+  return {
+    status: status === 'waiting' ? 'inProcess' : 'success',
+  };
 };

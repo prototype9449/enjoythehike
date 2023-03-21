@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { bookings } from './data/bookings';
 import { bookTrail, trails } from './data/trails';
 import { allWeekWeatherData, todayWeatherData } from './data/weather';
-import { TrailPlace } from '../../src/types';
+import { TrailPlace } from './types';
 import { BookTrail } from './types';
 
 @Injectable()
@@ -24,9 +24,8 @@ export class AppService {
   }
 
   bookTrail(trailToBook: BookTrail): any {
-    bookTrail(trailToBook);
-    return {
-      status: 'success',
-    };
+    const resp = bookTrail(trailToBook);
+
+    return resp;
   }
 }

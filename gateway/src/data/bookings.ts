@@ -3,7 +3,7 @@ import {
   Trail,
   TrailOption,
   TrailStatus,
-} from '../../../src/types';
+} from '../types';
 
 export const getHotel = (date: string) => {
   return {
@@ -68,7 +68,7 @@ export const addTrailToBookings = (
   trail: Trail,
   option: TrailOption,
   status: TrailStatus,
-) => {
+): BookedTrail => {
   const cost = option.hotel.price + option.taxi.price + option.lunch.price;
 
   const result: BookedTrail = {

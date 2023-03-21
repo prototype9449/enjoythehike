@@ -1,4 +1,4 @@
-import { TrailPlace, WeekDayWeather } from '../../../src/types';
+import { TrailPlace, WeekDayWeather } from '../types';
 
 export const todayWeatherData = [
   {

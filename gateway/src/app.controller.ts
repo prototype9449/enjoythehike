@@ -2,7 +2,7 @@ import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import { AppService } from './app.service';
 import { waitForMs } from './utils';
 import { BookTrail } from './types';
-import { TrailPlace } from '../../src/types';
+import { TrailPlace } from './types';
 
 @Controller('weather')
 export class AppController {
