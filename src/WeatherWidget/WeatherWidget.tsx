@@ -3,7 +3,7 @@ import { Box, LinearProgress, Paper, Typography } from "@mui/material";
 import { TodayWidgetCard } from "./TodayWidgetCard";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { WeekWeather } from "./WeekDayWeatherCard";
-import { useQuery, useIsFetching } from "react-query";
+import { useQuery, useIsFetching } from "@tanstack/react-query";
 import { getTodayWeather, getWeekWeather } from "../core/weather";
 import { places, TrailPlace } from '../types'
 
@@ -18,7 +18,7 @@ const ErrorDescription = ({ error }: { error: unknown }) => {
 export const WeatherWidget = () => {
   const [openNum, setOpened] = useState(-1);
 
-  const { isError, data, error, isFetched } = useQuery("today-weather", getTodayWeather, {
+  const { isError, data, error, isFetched } = useQuery(["today-weather"], getTodayWeather, {
     refetchOnWindowFocus: false,
     retry: false,
   });

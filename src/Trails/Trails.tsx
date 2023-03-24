@@ -56,14 +56,15 @@ type Props = {
   formPayload: any;
 };
 
-export const Trails = ({ formPayload }: Props) => {
+//export const Trails = ({ formPayload }: Props) => {
+export const Trails = () => {
   const [expanded, setExpanded] = useState<string | false>(false);
 
   const handleChange = (panel: string) => (event: SyntheticEvent, isExpanded: boolean) => {
     setExpanded(isExpanded ? panel : false);
   };
 
-  const { data, isFetched } = useGetTrails(formPayload);
+  const { data, isFetched } = useGetTrails();
 
   const trailComps = data?.map(({ trailId, name, hours, level, rank, climb, ratio, image, distance, priceMax, priceMin, options }) => {
     return (

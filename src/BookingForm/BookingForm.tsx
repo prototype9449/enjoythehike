@@ -7,9 +7,9 @@ import { SelectPlace } from "./SelectPlace";
 import { LoadingButton } from "@mui/lab";
 import dayjs from "dayjs";
 import React, { useEffect, useState } from "react";
-import { useGetTrails } from "../core/queries/useGetTrails";
+import { useGetTrails, useGetTrails2 } from "../core/queries/useGetTrails";
 import { Trails } from "../Trails/Trails";
-import { BookingFormValue } from '../types'
+import { BookingFormValue } from "../types";
 
 export const BookingForm = () => {
   const methods = useForm<BookingFormValue>({
@@ -23,26 +23,28 @@ export const BookingForm = () => {
 
   const { handleSubmit } = methods;
 
-  const [formPayload, setFormPayload] = useState<BookingFormValue | undefined>();
-  const { refetch, isFetching } = useGetTrails(formPayload);
+  //const [formPayload, setFormPayload] = useState<BookingFormValue | undefined>();
+  //const { refetch, isFetching } = useGetTrails(formPayload);
+  const { getTrails, isLoading } = useGetTrails2();
 
   const onSubmit = (values: BookingFormValue) => {
-    setFormPayload(values);
+    getTrails(values)
+    //setFormPayload(values);
   };
-
-  useEffect(() => {
-    if (!formPayload) {
-      return;
-    }
-    refetch();
-  }, [formPayload, refetch]);
+  //
+  // useEffect(() => {
+  //   if (!formPayload) {
+  //     return;
+  //   }
+  //   refetch();
+  // }, [formPayload, refetch]);
 
   return (
     <>
       <FormProvider {...methods}>
         <form method="GET" onSubmit={handleSubmit(onSubmit, (...err) => console.warn(err))}>
           <Box display="flex" flexDirection="row" alignItems="center" justifyContent="space-between" p={2}>
-            <Box display="flex" alignItems="center" >
+            <Box display="flex" alignItems="center">
               <SelectPlace />
               <Level />
               <MostlyPath />
@@ -58,7 +60,7 @@ export const BookingForm = () => {
                 size="large"
                 type="submit"
                 loading={false}
-                disabled={isFetching}
+                disabled={isLoading}
               >
                 Search
               </LoadingButton>
@@ -66,7 +68,7 @@ export const BookingForm = () => {
           </Box>
         </form>
       </FormProvider>
-      <Trails formPayload={formPayload} />
+      <Trails />
     </>
   );
 };

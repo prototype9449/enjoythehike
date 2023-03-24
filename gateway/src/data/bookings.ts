@@ -51,17 +51,6 @@ export const bookings: BookedTrail[] = makeCost([
     lunch: getLunch(),
     hotel: getHotel('25 of July'),
   },
-  {
-    trailId: 'atlanti1',
-    optionId: 'atlanti1_3',
-    status: 'waiting',
-    name: 'Atalanti Nature Troodos',
-    image: '/atalanti.jpeg',
-    date: '24 of July',
-    taxi: getTaxi(),
-    lunch: getLunch(),
-    hotel: getHotel('24 of July'),
-  },
 ]);
 
 export const addTrailToBookings = (

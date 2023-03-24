@@ -2,7 +2,7 @@ import { axiosInstance } from "./axiosInstance";
 import queryString from "query-string";
 import { BookedTrail, BookedTrailResponse, BookingFormValue, Trail } from '../types'
 
-type BookTrailPayload = {
+export type BookTrailPayload = {
   trailId: string;
   optionId: string
 };
