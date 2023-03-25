@@ -95,3 +95,5 @@ export const bookTrail = (trail: BookTrail): BookedTrailResponse => {
     status: status === 'waiting' ? 'inProcess' : 'success',
   };
 };
+
+

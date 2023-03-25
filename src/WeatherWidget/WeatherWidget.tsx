@@ -1,45 +1,26 @@
-import { Box, LinearProgress, Paper, Typography } from "@mui/material";
+import { Box, Paper, Typography } from "@mui/material";
 
 import { TodayWidgetCard } from "./TodayWidgetCard";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { WeekWeather } from "./WeekDayWeatherCard";
-import { useQuery, useIsFetching } from "@tanstack/react-query";
-import { getTodayWeather, getWeekWeather } from "../core/weather";
-import { places, TrailPlace } from '../types'
+import { places, TrailPlace } from "../types";
+import { useGetTodayWeather, useGetWeekWeather, useIsWeatherLoading } from "../core/queries/weather";
 
-const ErrorDescription = ({ error }: { error: unknown }) => {
-  return error ? (
+const ErrorDescription = ({ error }: { error: Error | string }) => {
+  const message = typeof error === "string" ? error : error.message ? error.message : "Weather is currently not available";
+  return (
     <Box width="100%" height="100%" display="flex" justifyContent="center" alignItems="center">
-      <Typography variant="h4">Weather is currently not available</Typography>
+      <Typography variant="h4">{message}</Typography>
     </Box>
-  ) : null;
+  );
 };
 
 export const WeatherWidget = () => {
   const [openNum, setOpened] = useState(-1);
 
-  const { isError, data, error, isFetched } = useQuery(["today-weather"], getTodayWeather, {
-    refetchOnWindowFocus: false,
-    retry: false,
-  });
+  const { isError, data, error, isFetched } = useGetTodayWeather();
 
-  const {
-    data: weekData,
-    //isFetching: weekIsFetching,
-    refetch: weekRefetch,
-  } = useQuery(
-    ["week-weather", openNum],
-    () => {
-      const city = data?.[openNum].place;
-      // @ts-ignore
-      return getWeekWeather(city);
-    },
-    {
-      refetchOnWindowFocus: false,
-      enabled: false,
-      retry: false,
-    }
-  );
+  const { weekData, weekRefetch } = useGetWeekWeather(places[openNum] || "Limassol");
 
   const handleOpenClick = useCallback((place: TrailPlace) => {
     setOpened((num) => {
@@ -75,16 +56,15 @@ export const WeatherWidget = () => {
     ));
   }, [data, handleOpenClick, openNum]);
 
-  const isFetching = useIsFetching({ predicate: (q) => ["week-weather", "today-weather"].some((x) => q.queryKey.includes(x)) });
+  const isWeatherLoading = useIsWeatherLoading();
 
   return (
     <>
-      <LinearProgress sx={{ height: "5px", visibility: isFetching ? "visible" : "hidden" }} />
       <Paper sx={{ mb: 2, borderRadius: "0", overflow: "hidden" }}>
         <Box sx={{ display: "flex", height: "391px" }}>
-          {(isFetching && !isFetched) || isError ? (
+          {(isWeatherLoading && !isFetched) || isError ? (
             <Box height="391px" width="100%">
-              <ErrorDescription error={error} />
+              {error ? <ErrorDescription error={error} /> : null}
             </Box>
           ) : (
             todayWidgets

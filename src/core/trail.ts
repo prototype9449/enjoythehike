@@ -13,6 +13,11 @@ export const bookTrail = (payload: BookTrailPayload): Promise<BookedTrailRespons
   return axiosInstance.post(`http://localhost:3002/weather/trail`, payload).then((x) => x.data);
 };
 
+export const checkTrailStatus = (payload: BookTrailPayload): Promise<BookedTrailResponse> => {
+  const queryParams = queryString.stringify(payload);
+  return axiosInstance.get(`http://localhost:3002/weather/trail/status?${queryParams}`).then((x) => x.data);
+}
+
 export const getBookings = (): Promise<BookedTrail[]> => {
   return axiosInstance.get("http://localhost:3002/weather/bookings").then((x) => x.data);
 };

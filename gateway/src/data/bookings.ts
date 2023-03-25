@@ -1,5 +1,7 @@
 import {
   BookedTrail,
+  BookedTrailResponse,
+  BookTrail,
   Trail,
   TrailOption,
   TrailStatus,
@@ -91,4 +93,13 @@ export const addTrailToBookings = (
   bookings.unshift(result);
 
   return result;
+};
+
+export const checkBookingStatus = (trail: BookTrail): BookedTrailResponse => {
+  const booking = bookings.find(
+    (x) => x.trailId === trail.trailId && x.optionId === trail.optionId,
+  );
+  return {
+    status: booking.status === 'waiting' ? 'inProcess' : 'success',
+  };
 };

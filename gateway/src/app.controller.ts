@@ -20,6 +20,15 @@ export class AppController {
     return this.appService.getTrails();
   }
 
+  @Get('/trail/status')
+  async getTrailStatus(
+    @Query('trailId') trailId: string,
+    @Query('optionId') optionId: string,
+  ): Promise<Record<string, any>> {
+    await waitForMs(1500);
+    return this.appService.checkTrailStatus({ trailId, optionId });
+  }
+
   @Get('/week')
   async getWeekWeather(
     @Query('city') city: TrailPlace,

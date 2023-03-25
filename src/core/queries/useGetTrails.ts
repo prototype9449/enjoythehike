@@ -15,9 +15,7 @@ import { Trail } from "../../types";
 export const useGetTrails = () => {
   // @ts-ignore
   return useQuery(["trails"], () => findTrails(undefined), {
-    refetchOnWindowFocus: false,
     enabled: false, // disable this query from automatically running
-    retry: false,
   });
 };
 

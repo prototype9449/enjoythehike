@@ -1,7 +1,7 @@
 import { Box, Button, CircularProgress, LinearProgress, Paper, Typography } from "@mui/material";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { findTrails, getBookings } from "../core/trail";
-import { BookedTrail } from '../types'
+import { useQueryClient } from "@tanstack/react-query";
+import { BookedTrail } from "../types";
+import { useGetBookings } from "../core/queries/useGetBookins";
 
 const NoBookings = () => {
   return (
@@ -10,7 +10,6 @@ const NoBookings = () => {
     </Box>
   );
 };
-
 
 const Details = ({ cost, hotel, lunch, taxi }: Pick<BookedTrail, "taxi" | "hotel" | "lunch" | "cost">) => {
   return (
@@ -84,15 +83,11 @@ const WaitingStatus = () => {
 };
 
 export const Bookings = () => {
-  const queryClient = useQueryClient()
-  const initialData = queryClient.getQueryData(['bookings'])
+  const queryClient = useQueryClient();
+  //const initialData = queryClient.getQueryData(['bookings'])
 
-  const { data, error, isFetched } = useQuery({queryKey: ["bookings"], queryFn: getBookings, enabled: !Boolean(initialData)})
-    // refetchOnWindowFocus: false,
-    // retry: false,
-    //enabled: !Boolean(initialData),
-  //});
-
+  //const { data, error, isFetched } = useQuery({queryKey: ["bookings"], queryFn: getBookings, enabled: !Boolean(initialData)})
+  const { data } = useGetBookings();
   const bookings = data?.map(({ trailId, optionId, name, date, status, cost, hotel, image, lunch, taxi }) => {
     return (
       <Paper

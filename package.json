@@ -6,6 +6,7 @@
     "@babel/core": "^7.16.0",
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
+    "@exness-tech/mock-xhr-request": "^0.0.1",
     "@mui/lab": "^5.0.0-alpha.123",
     "@mui/material": "^5.11.13",
     "@mui/x-date-pickers-pro": "^6.0.2",

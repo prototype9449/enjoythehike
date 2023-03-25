@@ -33,10 +33,10 @@ const Level = ({ level }: { level: TrailLevel }) => {
   );
 };
 
-const TrailOptions = ({ name, trailId, options }: { options: TrailOption[], trailId: string, name: string }) => {
+const TrailOptions = ({ name, trailId, options, image }: { options: TrailOption[], image: string, trailId: string, name: string }) => {
   const opts = options.map((x, i) => (
     <Box key={`${trailId}_${x.optionId}`} borderTop={i !== 0 ? "1px solid lightgrey" : ''} pt={2} pb={2} ml={4}>
-      <TrailDetails {...x} trailName={name} trailId={trailId}/>
+      <TrailDetails {...x} trailName={name} trailId={trailId} image={image}/>
     </Box>
   ));
   return <Box width="100%">{opts}</Box>;
@@ -121,7 +121,7 @@ export const Trails = () => {
           </Box>
         </AccordionSummary>
         <AccordionDetails>
-          <TrailOptions name={name} options={options} trailId={trailId}/>
+          <TrailOptions name={name} options={options} trailId={trailId} image={image}/>
         </AccordionDetails>
       </MuiAccordion>
     );
