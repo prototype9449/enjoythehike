@@ -23,21 +23,21 @@ export const BookingForm = () => {
 
   const { handleSubmit } = methods;
 
-  //const [formPayload, setFormPayload] = useState<BookingFormValue | undefined>();
+  const [formPayload, setFormPayload] = useState<BookingFormValue | undefined>();
   //const { refetch, isFetching } = useGetTrails(formPayload);
-  const { getTrails, isLoading } = useGetTrails2();
+  const { refetch, isFetching } = useGetTrails2(formPayload);
 
   const onSubmit = (values: BookingFormValue) => {
-    getTrails(values)
-    //setFormPayload(values);
+    //getTrails(values)
+    setFormPayload(values);
   };
   //
-  // useEffect(() => {
-  //   if (!formPayload) {
-  //     return;
-  //   }
-  //   refetch();
-  // }, [formPayload, refetch]);
+  useEffect(() => {
+    if (!formPayload) {
+      return;
+    }
+    refetch();
+  }, [formPayload, refetch]);
 
   return (
     <>
@@ -60,7 +60,7 @@ export const BookingForm = () => {
                 size="large"
                 type="submit"
                 loading={false}
-                disabled={isLoading}
+                disabled={isFetching}
               >
                 Search
               </LoadingButton>
