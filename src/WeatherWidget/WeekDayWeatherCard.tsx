@@ -17,7 +17,7 @@ const WeekDayWeatherCard = ({ weekDay, temperature, date, icon }: WeekDayWeather
         {weekDay} {date}
       </Typography>
       <Box mt={1} mb={1} mr={2} ml={2}>
-        <WeatherIcon key={icon} width={100} id={icon} animated={false} />
+        <WeatherIcon key={icon} width={50} id={icon} animated={false} />
       </Box>
       <Box
         textAlign="center"
