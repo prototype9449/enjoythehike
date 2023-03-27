@@ -49,7 +49,9 @@ const MainApp = () => {
     });
   }, [queryClient]);
 
-  const isFetching = useIsFetching({ predicate: (q) => q.state.status === "loading" });
+  const isFetching = useIsFetching({
+    predicate: (q) => q.state.status === "loading" || (q.queryKey.includes("trails") && q.state.fetchStatus === "fetching"),
+  });
   const isMutating = useIsMutating({
     predicate: (q) => q.state.status === "loading" && !q.options.mutationKey?.includes("fetchStatus"),
   });
