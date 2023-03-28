@@ -1,12 +1,11 @@
-import { Box, Button, Link } from "@mui/material";
+import { Box, Button, Link, Typography } from "@mui/material";
 import { IconCircleCheck } from "@tabler/icons-react";
 import { Row, ValuePart } from "./shared";
 import { useSnackbar } from "notistack";
-import { useBookTrail } from '../core/queries/useBookTrail'
+import { useBookTrail } from "../core/queries/useBookTrail";
 import { TrailOption } from "../../gateway/src/types";
 
-type Props = TrailOption & { trailName: string; trailId: string, image: string };
-
+type Props = TrailOption & { trailName: string; trailId: string; image: string };
 
 export const TrailDetails = ({ trailName, image, taxi, lunch, hotel, date, trailId, optionId }: Props) => {
   const { mutate, isLoading } = useBookTrail();
@@ -18,11 +17,13 @@ export const TrailDetails = ({ trailName, image, taxi, lunch, hotel, date, trail
         enqueueSnackbar(`You booked a trail ${trailName}`, { variant: "success" });
       } else if (data.status === "inProcess") {
         enqueueSnackbar(`We are process your request for ${trailName}`, { variant: "info" });
-      } else if (data.status === 'error') {
+      } else if (data.status === "error") {
         enqueueSnackbar(data.message || "Oops, some error occurred while processing your order");
       }
     });
   };
+
+  const cost = taxi.price + lunch.price + hotel.price;
 
   return (
     <Box width="100%" display="flex" alignItems="center" justifyContent="space-between">
@@ -48,7 +49,10 @@ export const TrailDetails = ({ trailName, image, taxi, lunch, hotel, date, trail
           <ValuePart>{lunch.price}$</ValuePart>
         </Row>
       </Box>
-      <Box>
+      <Box display="flex" alignItems="center">
+        <Typography sx={{ mr: 2, color: (t) => t.palette.text.primary }} variant="h6" fontWeight="bold">
+          {cost}$
+        </Typography>
         <Button disabled={isLoading} variant="contained" endIcon={<IconCircleCheck />} onClick={handleMutate}>
           Order
         </Button>

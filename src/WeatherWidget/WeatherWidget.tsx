@@ -6,6 +6,7 @@ import { WeekWeather } from "./WeekDayWeatherCard";
 import { places } from "../constants";
 import { useGetTodayWeather, useGetWeekWeather, useIsWeatherLoading } from "../core/queries/weather";
 import { TrailPlace } from "../../gateway/src/types";
+import dayjs, { Dayjs } from "dayjs";
 
 const ErrorDescription = ({ error }: { error: Error | string }) => {
   const message = typeof error === "string" ? error : error.message ? error.message : "Weather is currently not available";
@@ -25,7 +26,11 @@ function usePrevious<T>(value: T): T | undefined {
   return ref.current; //in the end, return the current ref value.
 }
 
-export const WeatherWidget = () => {
+type Props = {
+  onDayClick: ( place: TrailPlace, date: Dayjs) => void
+}
+
+export const WeatherWidget = ({ onDayClick }: Props) => {
   const [openNum, setOpened] = useState(-1);
 
   const previous = usePrevious(openNum);
@@ -72,6 +77,11 @@ export const WeatherWidget = () => {
 
   const isWeatherLoading = useIsWeatherLoading();
 
+  const handleDayClick = useCallback((place: TrailPlace, i: number) => {
+    const date = dayjs('2023-03-30').add(i, 'day')
+    onDayClick(place, date)
+  }, [onDayClick])
+
   return (
     <>
       <Paper sx={{ mb: 2, borderRadius: "0", overflow: "hidden" }}>
@@ -85,7 +95,7 @@ export const WeatherWidget = () => {
           )}
         </Box>
         <Box maxHeight={openNum !== -1 ? "400px" : 0} overflow="hidden" sx={{ transition: "max-height 0.25s ease-in" }}>
-          <WeekWeather data={weekData || []} />
+          <WeekWeather data={weekData || []} place={currentPlace} onClick={handleDayClick} />
         </Box>
       </Paper>
     </>

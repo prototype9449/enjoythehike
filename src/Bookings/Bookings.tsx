@@ -125,7 +125,7 @@ export const Bookings = () => {
       ) : (
         <Box width="100%" height="150px" display="flex" alignItems="center" justifyContent="center">
           <Typography color={color} variant="h5">
-            {isError ? errorMessage : "You have not booked a trail yet"}
+            {isError ? errorMessage : "You haven't booked any hikes yet"}
           </Typography>
           <Box ml={2}>{isError ? <IconAlertOctagon size={35} color={color} /> : <IconCircleOff size={35} color={color} />}</Box>
         </Box>

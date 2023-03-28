@@ -1,7 +1,8 @@
 import {
   BookedTrail,
   BookedTrailResponse,
-  BookTrail, InProcessStatusBookResponse,
+  BookTrail,
+  InProcessStatusBookResponse,
   StatusBookResponse,
   Trail,
   TrailBookingStatus,
@@ -49,21 +50,23 @@ const makeCost = (books: BookedTrail[]): BookedTrail[] => {
   return books;
 };
 
-export const bookings: BookedTrail[] = makeCost([
-  {
-    id: 999,
-    cost: 0,
-    trailId: 'atlanti1',
-    optionId: 'atlanti1_2',
-    status: 'booked',
-    name: 'Atalanti Nature Troodos',
-    image: '/atalanti.jpeg',
-    date: '25 of July',
-    taxi: getTaxi(),
-    lunch: getLunch(),
-    hotel: getHotel('25 of July'),
-  },
-]);
+// export const bookings: BookedTrail[] = makeCost([
+//   {
+//     id: 999,
+//     cost: 0,
+//     trailId: 'atlanti1',
+//     optionId: 'atlanti1_2',
+//     status: 'booked',
+//     name: 'Atalanti Nature Troodos',
+//     image: '/atalanti.jpg',
+//     date: '25 of July',
+//     taxi: getTaxi(),
+//     lunch: getLunch(),
+//     hotel: getHotel('25 of July'),
+//   },
+// ]);
+
+export const bookings: BookedTrail[] = [];
 
 export const addTrailToBookings = (
   trail: Trail,

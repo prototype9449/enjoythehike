@@ -25,7 +25,7 @@ export const SelectPlace = () => {
         {...field}
       >
         <MenuItem value="any">
-          <em>None</em>
+          <em>Any</em>
         </MenuItem>
         {menuItems}
       </Select>

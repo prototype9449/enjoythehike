@@ -49,7 +49,7 @@ const TrailOptions = ({
   name: string;
 }) => {
   const opts = options.map((x, i) => (
-    <Box key={`${trailId}_${x.optionId}`} borderTop={i !== 0 ? "1px solid lightgrey" : ""} pt={2} pb={2} ml={4}>
+    <Box key={`${trailId}_${x.optionId}`} borderTop={i !== 0 ? "1px solid lightgrey" : ""} pt={2} pb={2} ml={2}>
       <TrailDetails {...x} trailName={name} trailId={trailId} image={image} />
     </Box>
   ));
@@ -128,7 +128,8 @@ export const Trails = () => {
               </Box>
               <Box>
                 <Button
-                  variant="contained"
+                  variant="outlined"
+                  color="primary"
                   sx={{ marginTop: "auto", width: "100px", justifyContent: "space-between" }}
                   endIcon={expanded === name ? <IconChevronUp /> : <IconChevronDown />}
                 >

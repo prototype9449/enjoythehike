@@ -5,26 +5,43 @@ import { Range } from "./Range";
 import { Level } from "./Level";
 import { SelectPlace } from "./SelectPlace";
 import { LoadingButton } from "@mui/lab";
-import dayjs from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import React, { useEffect, useState } from "react";
 import { useGetTrails } from "../core/queries/useGetTrails";
 import { Trails } from "../Trails/Trails";
-import { BookingFormValue } from "../../gateway/src/types";
+import { BookingFormValue, TrailPlace } from "../../gateway/src/types";
 
-export const BookingForm = () => {
+type Props = {
+  chosenDay?: ChosenDay;
+};
+
+export type ChosenDay = {
+  day: Dayjs;
+  place: TrailPlace | "any";
+};
+
+export const BookingForm = ({ chosenDay }: Props) => {
   const methods = useForm<BookingFormValue>({
     mode: "all",
     defaultValues: {
       place: "any",
       mostlyPath: true,
-      range: [dayjs("2022-04-17"), dayjs("2022-04-21")].join("$"),
+      range: [dayjs("2023-03-30"), dayjs("2023-04-05")].join("$"),
     },
   });
 
-  const { handleSubmit } = methods;
+  const { handleSubmit, setValue } = methods;
+
+  useEffect(() => {
+    if (!chosenDay) {
+      return;
+    }
+    setValue("place", chosenDay.place);
+    setValue("range", [chosenDay.day, chosenDay.day.add(1, "day")].join("$"));
+  }, [chosenDay, setValue]);
 
   const [formPayload, setFormPayload] = useState<BookingFormValue | undefined>();
-  //const { refetch, isFetching } = useGetTrails(formPayload);
+
   const { refetch, isFetching } = useGetTrails(formPayload);
 
   const onSubmit = (values: BookingFormValue) => {

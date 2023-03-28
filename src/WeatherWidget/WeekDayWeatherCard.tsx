@@ -1,5 +1,6 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import { WeatherIcon } from "../icons/Icon";
+import { TrailPlace } from '../../gateway/src/types'
 
 type WeekDayWeatherCardProps = {
   weekDay: string;
@@ -9,10 +10,11 @@ type WeekDayWeatherCardProps = {
   };
   icon: string;
   date: string;
+  onClick: () => void
 };
-const WeekDayWeatherCard = ({ weekDay, temperature, date, icon }: WeekDayWeatherCardProps) => {
+const WeekDayWeatherCard = ({ weekDay, temperature, date, icon, onClick }: WeekDayWeatherCardProps) => {
   return (
-    <Box pt={2} width="100%" display="flex" alignItems="center" flexDirection="column">
+    <Button onClick={onClick} sx={{ p: 0, pt:2, textTransform: 'none', color: 'inherit', width: "100%", display: "flex", alignItems: "center", flexDirection: "column" }}>
       <Typography variant="h6">
         {weekDay} {date}
       </Typography>
@@ -47,12 +49,14 @@ const WeekDayWeatherCard = ({ weekDay, temperature, date, icon }: WeekDayWeather
           {temperature.night}°C
         </Typography>
       </Box>
-    </Box>
+    </Button>
   );
 };
 
 type WeekWeatherProps = {
+  place: TrailPlace
   data: WeekWeatherPayload[];
+  onClick: (place: TrailPlace, i: number) => void
 };
 
 export type WeekWeatherPayload = {
@@ -62,7 +66,7 @@ export type WeekWeatherPayload = {
   icon: string;
 };
 
-export const WeekWeather = ({ data }: WeekWeatherProps) => {
+export const WeekWeather = ({ place, data, onClick }: WeekWeatherProps) => {
   const lines = [...new Array(6)].map((x, i) => (
     <Box
       width="1px"
@@ -79,8 +83,8 @@ export const WeekWeather = ({ data }: WeekWeatherProps) => {
 
   return (
     <Box display="flex" justifyContent="space-between" width="100%" position="relative" borderTop="1px solid lightgrey">
-      {data.map((x) => (
-        <WeekDayWeatherCard key={x.weekDay} {...x} />
+      {data.map((x, i) => (
+        <WeekDayWeatherCard key={x.weekDay} onClick={() => onClick(place, i)} {...x} />
       ))}
       {lines}
     </Box>

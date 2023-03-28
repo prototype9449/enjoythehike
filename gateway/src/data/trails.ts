@@ -11,7 +11,7 @@ export const trails: Trail[] = [
     distance: 13.92,
     level: 'hard',
     rank: 85,
-    image: '/atalanti.jpeg',
+    image: '/atalanti.jpg',
     priceMax: 140,
     priceMin: 90,
     hours: 9,
@@ -23,7 +23,7 @@ export const trails: Trail[] = [
           price: 80,
           ratio: 4.6,
         },
-        date: '25 of July',
+        date: '31 of March',
         lunch: {
           price: 12,
           dish: 'Rice with salmon',
@@ -40,10 +40,10 @@ export const trails: Trail[] = [
           price: 90,
           ratio: 3,
         },
-        date: '29 of July',
+        date: '1 of April',
         lunch: {
           price: 10,
-          dish: 'Beef with makaroni',
+          dish: 'Beef with pasta',
         },
         taxi: {
           type: 'economy',
@@ -57,7 +57,7 @@ export const trails: Trail[] = [
           price: 70,
           ratio: 4,
         },
-        date: '27 of July',
+        date: '31 of March',
         lunch: {
           price: 10,
           dish: 'Big fried pie',
@@ -84,7 +84,7 @@ export const trails: Trail[] = [
     options: [
       {
         optionId: 'coralbay1_1',
-        date: '25 of July',
+        date: '2 of April',
         hotel: {
           name: 'Avlida Hotel',
           price: 70,
@@ -92,7 +92,7 @@ export const trails: Trail[] = [
         },
         lunch: {
           price: 18,
-          dish: 'Chowder with an ax',
+          dish: 'Ax porridge',
         },
         taxi: {
           type: 'economy',
@@ -106,7 +106,7 @@ export const trails: Trail[] = [
           price: 60,
           ratio: 3,
         },
-        date: '29 of July',
+        date: '1 of April',
         lunch: {
           price: 13,
           dish: 'Сottage cheese with fruits',
@@ -114,6 +114,55 @@ export const trails: Trail[] = [
         taxi: {
           type: 'comfort',
           price: 32,
+        },
+      },
+    ],
+  },
+  {
+    trailId: 'peiya1',
+    name: 'Akamas from Neo Chorio',
+    climb: 612,
+    ratio: 4.3,
+    distance: 19,
+    level: 'medium',
+    rank: 62,
+    image: '/peiya1.jpg',
+    priceMax: 152,
+    priceMin: 110,
+    hours: 7,
+    options: [
+      {
+        optionId: 'peiya1_1',
+        date: '3 of April',
+        hotel: {
+          name: 'Four Seasons Hotel',
+          price: 80,
+          ratio: 4,
+        },
+        lunch: {
+          price: 22,
+          dish: 'Potatoes with pork',
+        },
+        taxi: {
+          type: 'comfort',
+          price: 50,
+        },
+      },
+      {
+        optionId: 'peiya1_2',
+        hotel: {
+          name: 'Lordos Beach Hotel',
+          price: 60,
+          ratio: 3,
+        },
+        date: '31 of March',
+        lunch: {
+          price: 20,
+          dish: 'Pancakes with caviar',
+        },
+        taxi: {
+          type: 'comfort',
+          price: 30,
         },
       },
     ],
