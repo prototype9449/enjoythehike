@@ -15,8 +15,8 @@ import { SyntheticEvent, useState } from "react";
 import { ReactSVG } from "react-svg";
 import { TrailDetails } from "./TrailDetails";
 import { Row, ValuePart } from "./shared";
-import { useGetTrails2 } from "../core/queries/useGetTrails";
-import { TrailLevel, TrailOption } from "../types";
+import { useGetTrails } from "../core/queries/useGetTrails";
+import { TrailLevel, TrailOption } from "../../gateway/src/types";
 
 const Level = ({ level }: { level: TrailLevel }) => {
   const {
@@ -78,7 +78,7 @@ export const Trails = () => {
     setExpanded(isExpanded ? panel : false);
   };
 
-  const { data, isError, error, isFetched } = useGetTrails2();
+  const { data, isError, error, isFetched } = useGetTrails();
 
   const trailComps = data?.map(
     ({ trailId, name, hours, level, rank, climb, ratio, image, distance, priceMax, priceMin, options }) => {

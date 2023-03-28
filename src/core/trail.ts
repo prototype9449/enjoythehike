@@ -1,7 +1,6 @@
 import { axiosInstance } from "./axiosInstance";
 import queryString from "query-string";
-import { BookedTrail, BookingFormValue, Trail } from '../types'
-import { BookedTrailResponse } from "../../gateway/src/types";
+import { BookedTrail, BookedTrailResponse, BookingFormValue, Trail } from "../../gateway/src/types";
 
 export type BookTrailPayload = {
   trailId: string;
@@ -10,9 +9,8 @@ export type BookTrailPayload = {
 
 const baseUrl = "http://localhost:3002/api"
 
-export const checkBookingStatus = (payload: BookTrailPayload): Promise<BookedTrailResponse> => {
-  const queryParams = queryString.stringify(payload);
-  return axiosInstance.get(`${baseUrl}/bookings/status?${queryParams}`).then((x) => x.data);
+export const checkBookingStatus = (id: number): Promise<BookedTrailResponse> => {
+  return axiosInstance.get(`${baseUrl}/bookings/${id}/status`).then((x) => x.data);
 }
 
 export const getBookings = (): Promise<BookedTrail[]> => {

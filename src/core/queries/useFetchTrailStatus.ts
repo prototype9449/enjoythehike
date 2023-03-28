@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { BookTrailPayload, checkBookingStatus } from '../trail'
+import { checkBookingStatus } from '../trail'
 import { useSnackbar } from 'notistack'
 
 export const useFetchTrailStatus = () => {
@@ -7,20 +7,21 @@ export const useFetchTrailStatus = () => {
   const { enqueueSnackbar } = useSnackbar();
 
   const { mutate, isLoading } = useMutation(
-    async ({ trailId, optionId }: BookTrailPayload) => {
-      return checkBookingStatus({ trailId, optionId });
+    async (id: number) => {
+      return checkBookingStatus(id);
     },
     {
       mutationKey: ['fetchStatus'],
-      onSuccess: (data, {trailId, optionId}) =>{
+      onSuccess: (data, id) =>{
         if(data.status === 'inProcess') {
           setTimeout(() => {
-            mutate({trailId, optionId})
+            mutate(id)
           }, 3000)
         } else if(data.status === 'success') {
           queryClient.invalidateQueries({
             queryKey: ['bookings']
           });
+          enqueueSnackbar('You have successfully booked a trail');
         }
       },
       onError: (e, bookPayload, context) => {

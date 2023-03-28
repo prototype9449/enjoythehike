@@ -1,11 +1,19 @@
 import {
   BookedTrail,
   BookedTrailResponse,
-  BookTrail, StatusBookResponse,
+  BookTrail, InProcessStatusBookResponse,
+  StatusBookResponse,
   Trail,
+  TrailBookingStatus,
   TrailOption,
   TrailStatus,
 } from '../types';
+
+let globalBookId = 1000;
+const generateId = (): number => {
+  globalBookId = globalBookId + 1;
+  return globalBookId;
+};
 
 export const getHotel = (date: string) => {
   return {
@@ -34,7 +42,7 @@ export const getLunch = () => {
   };
 };
 
-const makeCost = (books) => {
+const makeCost = (books: BookedTrail[]): BookedTrail[] => {
   books.forEach((x) => {
     x.cost = x.taxi.price + x.lunch.price + x.hotel.price;
   });
@@ -43,6 +51,8 @@ const makeCost = (books) => {
 
 export const bookings: BookedTrail[] = makeCost([
   {
+    id: 999,
+    cost: 0,
     trailId: 'atlanti1',
     optionId: 'atlanti1_2',
     status: 'booked',
@@ -63,6 +73,7 @@ export const addTrailToBookings = (
   const cost = option.hotel.price + option.taxi.price + option.lunch.price;
 
   const result: BookedTrail = {
+    id: generateId(),
     trailId: trail.trailId,
     optionId: option.optionId,
     status,
@@ -95,11 +106,19 @@ export const addTrailToBookings = (
   return result;
 };
 
-export const checkBookingStatus = (trail: BookTrail): StatusBookResponse => {
-  const booking = bookings.find(
-    (x) => x.trailId === trail.trailId && x.optionId === trail.optionId,
-  );
+export const checkBookingStatus = (id: number): StatusBookResponse => {
+  const booking = bookings.find((x) => x.id === id);
+  const bookStatus: TrailBookingStatus =
+    booking.status === 'waiting' ? 'inProcess' : 'success';
+
+  if (bookStatus === 'success') {
+    return {
+      status: bookStatus,
+      trailName: booking.name,
+    };
+  }
+
   return {
-    status: booking.status === 'waiting' ? 'inProcess' : 'success',
-  };
+    status: bookStatus,
+  } as InProcessStatusBookResponse;
 };

@@ -1,7 +1,7 @@
 import { bookTrail, BookTrailPayload } from "../trail";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { BookedTrail } from "../../types";
 import { useFetchTrailStatus } from "./useFetchTrailStatus";
+import { BookedTrail } from "../../../gateway/src/types";
 
 type MutatePayload = {
   trailName: string;
@@ -25,6 +25,7 @@ export const useBookTrail = () => {
           ["bookings"],
           [
             {
+              id: 1231231,
               trailId,
               optionId,
               name: trailName,
@@ -42,7 +43,7 @@ export const useBookTrail = () => {
         //const prevBookings = queryClient.getQueryData<BookedTrail[]>(["bookings"]) ?? [];
 
         if (data.status === "inProcess") {
-          checkTrailStatus({ trailId, optionId });
+          checkTrailStatus(data.id);
         } else if (data.status === "success") {
           // @ts-ignore
           queryClient.setQueryData(["bookings"], [data.data, ...context?.prevBookings]);

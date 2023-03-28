@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Param, ParseIntPipe, Post, Query } from '@nestjs/common';
 import { AppService } from './app.service';
 import { waitForMs } from './utils';
 import { BookTrail } from './types';
@@ -28,13 +28,10 @@ export class AppController {
     return this.appService.getTrails();
   }
 
-  @Get('/bookings/status')
-  async getTrailStatus(
-    @Query('trailId') trailId: string,
-    @Query('optionId') optionId: string,
-  ): Promise<Record<string, any>> {
+  @Get('/bookings/:id/status')
+  async getTrailStatus(@Param('id', new ParseIntPipe()) id: number): Promise<Record<string, any>> {
     await waitForMs(1500);
-    return this.appService.checkTrailStatus({ trailId, optionId });
+    return this.appService.checkTrailStatus(id);
   }
 
   @Get('/bookings')

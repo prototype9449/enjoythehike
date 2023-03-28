@@ -1,8 +1,8 @@
-import { Box, Button, IconButton, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import { WeatherIcon } from "../icons/Icon";
-import { IconChevronDown, IconChevronUp, IconFoldDown, IconFoldUp } from "@tabler/icons-react";
+import { IconChevronDown, IconChevronUp } from "@tabler/icons-react";
 import { memo, useMemo } from "react";
-import { TodayWeather, TrailPlace } from '../types'
+import { TodayWeather, TrailPlace } from "../../gateway/src/types";
 
 type Props = {
   isOpened: boolean;

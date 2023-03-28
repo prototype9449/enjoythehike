@@ -29,7 +29,7 @@ export class AppService {
     return resp;
   }
 
-  checkTrailStatus(trailToBook: BookTrail): any {
-    return checkBookingStatus(trailToBook);
+  checkTrailStatus(id: number): any {
+    return checkBookingStatus(id);
   }
 }

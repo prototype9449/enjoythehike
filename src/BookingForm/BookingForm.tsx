@@ -1,4 +1,4 @@
-import { Box, Paper } from "@mui/material";
+import { Box } from "@mui/material";
 import { useForm, FormProvider } from "react-hook-form";
 import { MostlyPath } from "./MostlyPath";
 import { Range } from "./Range";
@@ -7,9 +7,9 @@ import { SelectPlace } from "./SelectPlace";
 import { LoadingButton } from "@mui/lab";
 import dayjs from "dayjs";
 import React, { useEffect, useState } from "react";
-import { useGetTrails, useGetTrails2 } from "../core/queries/useGetTrails";
+import { useGetTrails } from "../core/queries/useGetTrails";
 import { Trails } from "../Trails/Trails";
-import { BookingFormValue } from "../types";
+import { BookingFormValue } from "../../gateway/src/types";
 
 export const BookingForm = () => {
   const methods = useForm<BookingFormValue>({
@@ -25,7 +25,7 @@ export const BookingForm = () => {
 
   const [formPayload, setFormPayload] = useState<BookingFormValue | undefined>();
   //const { refetch, isFetching } = useGetTrails(formPayload);
-  const { refetch, isFetching } = useGetTrails2(formPayload);
+  const { refetch, isFetching } = useGetTrails(formPayload);
 
   const onSubmit = (values: BookingFormValue) => {
     //getTrails(values)

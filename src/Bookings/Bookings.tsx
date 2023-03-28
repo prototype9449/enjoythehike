@@ -1,8 +1,7 @@
-import { Box, Button, CircularProgress, LinearProgress, Paper, Typography, useTheme } from "@mui/material";
-import { useQueryClient } from "@tanstack/react-query";
-import { BookedTrail } from "../types";
+import { Box, Button, CircularProgress, Paper, Typography, useTheme } from "@mui/material";
 import { useGetBookings } from "../core/queries/useGetBookins";
 import { IconAlertOctagon, IconCircleOff } from "@tabler/icons-react";
+import { BookedTrail } from "../../gateway/src/types";
 
 const Details = ({ cost, hotel, lunch, taxi }: Pick<BookedTrail, "taxi" | "hotel" | "lunch" | "cost">) => {
   return (
@@ -77,10 +76,10 @@ const WaitingStatus = () => {
 
 export const Bookings = () => {
   const { data, isError, error, isFetched } = useGetBookings();
-  const bookings = data?.map(({ trailId, optionId, name, date, status, cost, hotel, image, lunch, taxi }) => {
+  const bookings = data?.map(({ id, trailId, optionId, name, date, status, cost, hotel, image, lunch, taxi }) => {
     return (
       <Paper
-        key={`${trailId}_${optionId}_${date}_${status}`}
+        key={id}
         sx={{
           p: 2,
           display: "flex",

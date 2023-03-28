@@ -1,10 +1,11 @@
 import { Box, Paper, Typography } from "@mui/material";
 
 import { TodayWidgetCard } from "./TodayWidgetCard";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { WeekWeather } from "./WeekDayWeatherCard";
-import { places, TrailPlace } from "../types";
+import { places } from "../constants";
 import { useGetTodayWeather, useGetWeekWeather, useIsWeatherLoading } from "../core/queries/weather";
+import { TrailPlace } from "../../gateway/src/types";
 
 const ErrorDescription = ({ error }: { error: Error | string }) => {
   const message = typeof error === "string" ? error : error.message ? error.message : "Weather is currently not available";
@@ -15,12 +16,25 @@ const ErrorDescription = ({ error }: { error: Error | string }) => {
   );
 };
 
+function usePrevious<T>(value: T): T | undefined {
+  const ref = useRef<T>();
+  useEffect(() => {
+    ref.current = value; //assign the value of ref to the argument
+  }, [value]); //this code will run when the value of 'value' changes
+
+  return ref.current; //in the end, return the current ref value.
+}
+
 export const WeatherWidget = () => {
   const [openNum, setOpened] = useState(-1);
 
+  const previous = usePrevious(openNum);
+
   const { isError, data, error, isFetched } = useGetTodayWeather();
 
-  const { weekData, weekRefetch } = useGetWeekWeather(places[openNum] || "Limassol");
+  const currentPlace = places[openNum] || (previous && places[previous]) || "Limassol";
+
+  const { weekData, weekRefetch } = useGetWeekWeather(currentPlace);
 
   const handleOpenClick = useCallback((place: TrailPlace) => {
     setOpened((num) => {

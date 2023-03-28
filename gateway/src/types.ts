@@ -12,6 +12,7 @@ export class BookTrail {
 
 export type TrailStatus = 'booked' | 'waiting' | 'canceled';
 export type BookedTrail = {
+  id: number;
   trailId: string;
   optionId: string;
   name: string;
@@ -59,14 +60,44 @@ export type TrailOption = {
 
 export type TrailBookingStatus = 'success' | 'inProcess' | 'error';
 
-export type StatusBookResponse = {
-  status: TrailBookingStatus;
-  error?: string;
+export type SuccessStatusBookResponse = {
+  status: 'success';
+  trailName: string;
+};
+
+export type InProcessStatusBookResponse = {
+  status: 'inProcess';
+};
+
+export type ErrorStatusBookResponse = {
+  status: 'error';
+  message?: string;
+};
+
+export type StatusBookResponse =
+  | ErrorStatusBookResponse
+  | InProcessStatusBookResponse
+  | SuccessStatusBookResponse;
+
+export type SuccessBookResponse = {
+  status: 'success';
+  data: BookedTrail;
+};
+
+export type WaitingStatusBookResponse = {
+  status: 'inProcess';
+  id: number;
+};
+
+export type ErrorBookResponse = {
+  status: 'error';
+  message?: string;
 };
 
 export type BookedTrailResponse =
-  | StatusBookResponse
-  | (StatusBookResponse & { status: 'success'; data: BookedTrail });
+  | ErrorBookResponse
+  | WaitingStatusBookResponse
+  | SuccessBookResponse;
 
 export type TodayWeather = {
   place: TrailPlace;

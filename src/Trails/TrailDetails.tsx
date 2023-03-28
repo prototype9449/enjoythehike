@@ -2,8 +2,8 @@ import { Box, Button, Link } from "@mui/material";
 import { IconCircleCheck } from "@tabler/icons-react";
 import { Row, ValuePart } from "./shared";
 import { useSnackbar } from "notistack";
-import { TrailOption } from "../types";
 import { useBookTrail } from '../core/queries/useBookTrail'
+import { TrailOption } from "../../gateway/src/types";
 
 type Props = TrailOption & { trailName: string; trailId: string, image: string };
 
@@ -18,8 +18,8 @@ export const TrailDetails = ({ trailName, image, taxi, lunch, hotel, date, trail
         enqueueSnackbar(`You booked a trail ${trailName}`, { variant: "success" });
       } else if (data.status === "inProcess") {
         enqueueSnackbar(`We are process your request for ${trailName}`, { variant: "info" });
-      } else if (data.status === "error") {
-        enqueueSnackbar(data.error || "Oops, some error occurred while processing your order");
+      } else if (data.status === 'error') {
+        enqueueSnackbar(data.message || "Oops, some error occurred while processing your order");
       }
     });
   };

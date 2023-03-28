@@ -1,12 +1,11 @@
 import { Controller, useFormContext } from 'react-hook-form'
 import { useMemo } from 'react'
-import { FormControl, FormHelperText, InputLabel, MenuItem, Select } from '@mui/material'
-import { BookingFormValue, places } from '../types'
+import { FormControl, InputLabel, MenuItem, Select } from '@mui/material'
+import { places } from "../constants";
+import { BookingFormValue } from "../../gateway/src/types";
 
 export const SelectPlace = () => {
   const {
-    formState: { errors, touchedFields, submitCount },
-    setValue,
     control,
   } = useFormContext<BookingFormValue>()
 

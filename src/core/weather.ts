@@ -1,7 +1,7 @@
 import { registerMock } from "@exness-tech/mock-xhr-request/lazy";
 import { axiosInstance } from "./axiosInstance";
 import { WeekWeatherPayload } from "../WeatherWidget/WeekDayWeatherCard";
-import { TodayWeather } from "../types";
+import { TodayWeather } from "../../gateway/src/types";
 
 const baseUrl = "http://localhost:3002/api"
 

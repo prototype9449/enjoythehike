@@ -1,39 +1,36 @@
-import { Controller, useFormContext } from 'react-hook-form'
-import { Checkbox, FormControl, FormControlLabel, Slider } from '@mui/material'
-import { BookingFormValue } from '../types'
+import { Controller, useFormContext } from "react-hook-form";
+import { FormControl, FormControlLabel, Slider } from "@mui/material";
+import { BookingFormValue } from "../../gateway/src/types";
 
 const levels = [
   {
     value: 0,
-    label: 'Low',
-    text: 'low',
+    label: "Low",
+    text: "low",
   },
   {
     value: 50,
-    label: 'Medium',
-    text: 'medium',
+    label: "Medium",
+    text: "medium",
   },
   {
     value: 100,
-    label: 'Hard',
-    text: 'hard',
+    label: "Hard",
+    text: "hard",
   },
 ] as const;
 
-const marks = levels.map(({value, label}) => ({value, label}))
+const marks = levels.map(({ value, label }) => ({ value, label }));
 
-const getValueByLabel = (label: string): number => levels.find(x => x.text === label)?.value!
+const getValueByLabel = (label: string): number => levels.find((x) => x.text === label)?.value!;
 
 const getLabelByValue = (value: number | number[]) => {
-  const v = Array.isArray(value) ? value[0] : value
-  return levels.find(x => x.value === value)?.text!
-}
+  const v = Array.isArray(value) ? value[0] : value;
+  return levels.find((x) => x.value === value)?.text!;
+};
 
 export const Level = () => {
-  const {
-    control,
-    setValue,
-  } = useFormContext<BookingFormValue>()
+  const { control, setValue } = useFormContext<BookingFormValue>();
 
   return (
     <Controller
@@ -44,7 +41,6 @@ export const Level = () => {
           <FormControlLabel
             labelPlacement="top"
             {...field}
-
             label="Difficulty"
             control={
               <Slider
@@ -55,12 +51,13 @@ export const Level = () => {
                 max={100}
                 value={getValueByLabel(field.value)}
                 onChange={(e, value) => {
-                  setValue('level', getLabelByValue(value), { shouldValidate: true, shouldTouch: true })
-                }} />
+                  setValue("level", getLabelByValue(value), { shouldValidate: true, shouldTouch: true });
+                }}
+              />
             }
           />
         </FormControl>
       )}
     />
-  )
-}
+  );
+};

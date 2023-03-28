@@ -142,6 +142,7 @@ export const bookTrail = (trail: BookTrail): BookedTrailResponse => {
   return status === 'waiting'
     ? {
         status: 'inProcess',
+        id: bookedTrail.id,
       }
     : {
         status: 'success',

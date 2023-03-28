@@ -1,6 +1,6 @@
-import { TrailPlace, WeekDayWeather } from '../types';
+import { TodayWeather, TrailPlace, WeekDayWeather } from '../types';
 
-export const todayWeatherData = [
+export const todayWeatherData: TodayWeather[] = [
   {
     forecast: 'clear-day',
     place: 'Limassol',

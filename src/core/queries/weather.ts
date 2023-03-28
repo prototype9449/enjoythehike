@@ -1,6 +1,6 @@
 import { useIsFetching, useQuery } from "@tanstack/react-query";
+import { TodayWeather, TrailPlace } from "../../../gateway/src/types";
 import { getTodayWeather, getWeekWeather } from "../weather";
-import { TodayWeather, TrailPlace } from "../../types";
 
 export const useIsWeatherLoading = (): number => {
   return useIsFetching({
