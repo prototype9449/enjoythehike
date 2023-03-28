@@ -26,6 +26,7 @@ export const BookingForm = ({ chosenDay }: Props) => {
     defaultValues: {
       place: "any",
       mostlyPath: true,
+      level: "low",
       range: [dayjs("2023-03-30"), dayjs("2023-04-05")].join("$"),
     },
   });

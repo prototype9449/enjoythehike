@@ -13,7 +13,7 @@ export const useFetchTrailStatus = () => {
     {
       mutationKey: ['fetchStatus'],
       onSuccess: (data, id) =>{
-        if(data.status === 'inProcess') {
+        if(data.status === 'in-process') {
           setTimeout(() => {
             mutate(id)
           }, 3000)

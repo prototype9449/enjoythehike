@@ -112,7 +112,7 @@ export const addTrailToBookings = (
 export const checkBookingStatus = (id: number): StatusBookResponse => {
   const booking = bookings.find((x) => x.id === id);
   const bookStatus: TrailBookingStatus =
-    booking.status === 'waiting' ? 'inProcess' : 'success';
+    booking.status === 'waiting' ? 'in-process' : 'success';
 
   if (bookStatus === 'success') {
     return {

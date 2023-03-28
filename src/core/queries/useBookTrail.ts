@@ -42,7 +42,7 @@ export const useBookTrail = () => {
       onSuccess: (data, { trailId, optionId }, context) => {
         //const prevBookings = queryClient.getQueryData<BookedTrail[]>(["bookings"]) ?? [];
 
-        if (data.status === "inProcess") {
+        if (data.status === "in-process") {
           checkTrailStatus(data.id);
         } else if (data.status === "success") {
           // @ts-ignore

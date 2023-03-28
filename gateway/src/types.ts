@@ -58,7 +58,7 @@ export type TrailOption = {
   date: string;
 };
 
-export type TrailBookingStatus = 'success' | 'inProcess' | 'error';
+export type TrailBookingStatus = 'success' | 'in-process' | 'error';
 
 export type SuccessStatusBookResponse = {
   status: 'success';
@@ -66,7 +66,7 @@ export type SuccessStatusBookResponse = {
 };
 
 export type InProcessStatusBookResponse = {
-  status: 'inProcess';
+  status: 'in-process';
 };
 
 export type ErrorStatusBookResponse = {
@@ -85,7 +85,7 @@ export type SuccessBookResponse = {
 };
 
 export type WaitingStatusBookResponse = {
-  status: 'inProcess';
+  status: 'in-process';
   id: number;
 };
 
