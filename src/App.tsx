@@ -1,15 +1,21 @@
 import React, { useEffect } from "react";
 import { LocalizationProvider } from "@mui/x-date-pickers-pro";
+import {setDefaultOptions} from '@exness-tech/mock-xhr-request'
 import { AdapterDayjs } from "@mui/x-date-pickers-pro/AdapterDayjs";
 import { QueryClient, QueryClientProvider, useIsFetching, useIsMutating, useQueryClient } from "@tanstack/react-query";
 import { SnackbarProvider } from "notistack";
+import "./fonts/orange_juice.ttf";
 
 import "./App.css";
 import { WeatherWidget } from "./WeatherWidget";
 import { BookingForm } from "./BookingForm/BookingForm";
-import { Box, CircularProgress, Paper, Tab, Tabs } from "@mui/material";
+import { Box, CircularProgress, Paper, Tab, Tabs, Typography } from "@mui/material";
 import { Bookings } from "./Bookings/Bookings";
 import { getBookings } from "./core/trail";
+
+setDefaultOptions({
+  baseUrl: 'http://localhost:3002'
+})
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -58,7 +64,10 @@ const MainApp = () => {
 
   return (
     <Box width="100%">
-      <Box width="1280px" ml="auto" mr="auto" mt="100px" mb="200px">
+      <Typography textAlign="center" mt="50px" variant="h1" fontFamily="OrangeJuice" color={'#3457e6d4'}>
+        Enjoy the hike
+      </Typography>
+      <Box width="1280px" ml="auto" mr="auto" mt="50px" mb="200px">
         <WeatherWidget />
         <Box sx={{ width: "100%", bgcolor: "background.paper" }}>
           <Paper elevation={5} sx={{ mb: 2 }}>

@@ -8,8 +8,9 @@ import {
   Rating,
   styled,
   Typography,
+  useTheme,
 } from "@mui/material";
-import { IconChevronDown, IconChevronUp } from "@tabler/icons-react";
+import { IconChevronDown, IconChevronUp, IconAlertOctagon, IconCircleOff } from "@tabler/icons-react";
 import { SyntheticEvent, useState } from "react";
 import { ReactSVG } from "react-svg";
 import { TrailDetails } from "./TrailDetails";
@@ -18,7 +19,10 @@ import { useGetTrails2 } from "../core/queries/useGetTrails";
 import { TrailLevel, TrailOption } from "../types";
 
 const Level = ({ level }: { level: TrailLevel }) => {
-  const fill = level === "low" ? "green" : level === "medium" ? "yellow" : "red";
+  const {
+    palette: { error, success, warning },
+  } = useTheme();
+  const fill = level === "low" ? success.main : level === "medium" ? warning.light : error.main;
 
   return (
     <Box mb={1} ml={2}>
@@ -83,7 +87,7 @@ export const Trails = () => {
           <AccordionSummary aria-controls="panel1bh-content" id="panel1bh-header">
             <Box display="flex" justifyContent="space-between" width="100%">
               <Box height="120px" width="180px">
-                <img src={image} height="100%" alt={name} />
+                <img src={image} width={"100%"} height="100%" alt={name} style={{ objectFit: "cover" }} />
               </Box>
               <Box ml={5} flex={1} display={"flex"}>
                 <Box height="100%" display="flex" flexDirection="column" justifyContent="space-between">
@@ -142,17 +146,21 @@ export const Trails = () => {
   );
 
   // @ts-ignore
-  const errorMessage = isError ? error?.response?.data?.error || error?.message || "Something went wrong" : undefined;
+  const errorMessage = isError ? error?.response?.data?.message || error?.message || "Something went wrong" : undefined;
 
+  const theme = useTheme();
+
+  const color = isError ? theme.palette.error.main : theme.palette.text.secondary;
   return (
     <Box>
       {data?.length || !isFetched ? (
         trailComps
       ) : (
         <Box width="100%" height="150px" display="flex" alignItems="center" justifyContent="center">
-          <Typography color={isError ? (t) => t.palette.error.main : "inherit"} variant="h5">
+          <Typography color={color} variant="h5" sx={{ mr: 2 }}>
             {!isError ? "No trails found. Try to change the parameters" : errorMessage}
           </Typography>
+          {isError ? <IconAlertOctagon size={35} color={color} /> : <IconCircleOff size={35} color={color} />}
         </Box>
       )}
     </Box>

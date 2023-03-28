@@ -1,28 +1,29 @@
 import { axiosInstance } from "./axiosInstance";
 import queryString from "query-string";
-import { BookedTrail, BookedTrailResponse, BookingFormValue, Trail } from '../types'
+import { BookedTrail, BookingFormValue, Trail } from '../types'
+import { BookedTrailResponse } from "../../gateway/src/types";
 
 export type BookTrailPayload = {
   trailId: string;
   optionId: string
 };
 
+const baseUrl = "http://localhost:3002/api"
 
-
-export const bookTrail = (payload: BookTrailPayload): Promise<BookedTrailResponse> => {
-  return axiosInstance.post(`http://localhost:3002/weather/trail`, payload).then((x) => x.data);
-};
-
-export const checkTrailStatus = (payload: BookTrailPayload): Promise<BookedTrailResponse> => {
+export const checkBookingStatus = (payload: BookTrailPayload): Promise<BookedTrailResponse> => {
   const queryParams = queryString.stringify(payload);
-  return axiosInstance.get(`http://localhost:3002/weather/trail/status?${queryParams}`).then((x) => x.data);
+  return axiosInstance.get(`${baseUrl}/bookings/status?${queryParams}`).then((x) => x.data);
 }
 
 export const getBookings = (): Promise<BookedTrail[]> => {
-  return axiosInstance.get("http://localhost:3002/weather/bookings").then((x) => x.data);
+  return axiosInstance.get(`${baseUrl}/bookings`).then((x) => x.data);
+};
+
+export const bookTrail = (payload: BookTrailPayload): Promise<BookedTrailResponse> => {
+  return axiosInstance.post(`${baseUrl}/bookings`, payload).then((x) => x.data);
 };
 
 export const findTrails = (payload: BookingFormValue): Promise<Trail[]> => {
   const queryParams = queryString.stringify(payload);
-  return axiosInstance.get(`http://localhost:3002/weather/trail?${queryParams}`).then((x) => x.data);
+  return axiosInstance.get(`${baseUrl}/trails?${queryParams}`).then((x) => x.data);
 };

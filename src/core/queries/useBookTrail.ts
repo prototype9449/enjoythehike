@@ -38,9 +38,14 @@ export const useBookTrail = () => {
 
         return { prevBookings };
       },
-      onSuccess: (data, { trailId, optionId }) => {
+      onSuccess: (data, { trailId, optionId }, context) => {
+        //const prevBookings = queryClient.getQueryData<BookedTrail[]>(["bookings"]) ?? [];
+
         if (data.status === "inProcess") {
           checkTrailStatus({ trailId, optionId });
+        } else if (data.status === "success") {
+          // @ts-ignore
+          queryClient.setQueryData(["bookings"], [data.data, ...context?.prevBookings]);
         }
       },
       onSettled: () => {

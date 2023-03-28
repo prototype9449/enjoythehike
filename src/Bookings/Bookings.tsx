@@ -1,15 +1,8 @@
-import { Box, Button, CircularProgress, LinearProgress, Paper, Typography } from "@mui/material";
+import { Box, Button, CircularProgress, LinearProgress, Paper, Typography, useTheme } from "@mui/material";
 import { useQueryClient } from "@tanstack/react-query";
 import { BookedTrail } from "../types";
 import { useGetBookings } from "../core/queries/useGetBookins";
-
-const NoBookings = () => {
-  return (
-    <Box display="flex" alignItems={"center"} justifyContent={"start"} pt={5} ml={10}>
-      <Typography variant="h5">You have not booked a trail yet</Typography>
-    </Box>
-  );
-};
+import { IconAlertOctagon, IconCircleOff } from "@tabler/icons-react";
 
 const Details = ({ cost, hotel, lunch, taxi }: Pick<BookedTrail, "taxi" | "hotel" | "lunch" | "cost">) => {
   return (
@@ -83,11 +76,7 @@ const WaitingStatus = () => {
 };
 
 export const Bookings = () => {
-  const queryClient = useQueryClient();
-  //const initialData = queryClient.getQueryData(['bookings'])
-
-  //const { data, error, isFetched } = useQuery({queryKey: ["bookings"], queryFn: getBookings, enabled: !Boolean(initialData)})
-  const { data } = useGetBookings();
+  const { data, isError, error, isFetched } = useGetBookings();
   const bookings = data?.map(({ trailId, optionId, name, date, status, cost, hotel, image, lunch, taxi }) => {
     return (
       <Paper
@@ -102,7 +91,7 @@ export const Bookings = () => {
         <Box display="flex" justifyContent={"space-between"}>
           <Box display={"flex"}>
             <Box width="180px" height="120px">
-              <img src={image} height="100%" alt={name} />
+              <img src={image} width={"100%"} height="100%" alt={name} style={{ objectFit: "cover" }} />
             </Box>
             <Box pl={2} display="flex" flexDirection="column" height="100%">
               <Typography variant="h5" mb={1}>
@@ -125,5 +114,23 @@ export const Bookings = () => {
     );
   });
 
-  return <Box width="100%">{bookings}</Box>;
+  const theme = useTheme();
+  const color = isError ? theme.palette.error.main : theme.palette.text.secondary;
+  // @ts-ignore
+  const errorMessage = isError ? error?.response?.data?.message || error?.message || "Something went wrong" : undefined;
+
+  return (
+    <Box width="100%">
+      {data?.length || !isFetched ? (
+        bookings
+      ) : (
+        <Box width="100%" height="150px" display="flex" alignItems="center" justifyContent="center">
+          <Typography color={color} variant="h5">
+            {isError ? errorMessage : "You have not booked a trail yet"}
+          </Typography>
+          <Box ml={2}>{isError ? <IconAlertOctagon size={35} color={color} /> : <IconCircleOff size={35} color={color} />}</Box>
+        </Box>
+      )}
+    </Box>
+  );
 };

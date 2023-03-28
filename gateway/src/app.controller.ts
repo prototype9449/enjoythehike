@@ -4,23 +4,31 @@ import { waitForMs } from './utils';
 import { BookTrail } from './types';
 import { TrailPlace } from './types';
 
-@Controller('weather')
+@Controller('api')
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
-  @Get('/today')
+  @Get('/weather/today')
   async getWeather(): Promise<Record<string, any>> {
     await waitForMs(1000);
     return this.appService.getTodayWeather();
   }
 
-  @Get('/trail')
+  @Get('/weather/week')
+  async getWeekWeather(
+    @Query('city') city: TrailPlace,
+  ): Promise<Record<string, any>> {
+    await waitForMs(1500);
+    return this.appService.getWeekWeather(city);
+  }
+
+  @Get('/trails')
   async getTrails(): Promise<Record<string, any>> {
     await waitForMs(1500);
     return this.appService.getTrails();
   }
 
-  @Get('/trail/status')
+  @Get('/bookings/status')
   async getTrailStatus(
     @Query('trailId') trailId: string,
     @Query('optionId') optionId: string,
@@ -29,21 +37,13 @@ export class AppController {
     return this.appService.checkTrailStatus({ trailId, optionId });
   }
 
-  @Get('/week')
-  async getWeekWeather(
-    @Query('city') city: TrailPlace,
-  ): Promise<Record<string, any>> {
-    await waitForMs(1500);
-    return this.appService.getWeekWeather(city);
-  }
-
   @Get('/bookings')
   async getBookings(): Promise<Record<string, any>> {
     await waitForMs(1500);
     return this.appService.getBookings();
   }
 
-  @Post('/trail')
+  @Post('/bookings')
   async bookTrail(@Body() body: BookTrail): Promise<Record<string, any>> {
     await waitForMs(1500);
     return this.appService.bookTrail(body);

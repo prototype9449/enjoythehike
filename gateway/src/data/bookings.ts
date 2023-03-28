@@ -1,7 +1,7 @@
 import {
   BookedTrail,
   BookedTrailResponse,
-  BookTrail,
+  BookTrail, StatusBookResponse,
   Trail,
   TrailOption,
   TrailStatus,
@@ -95,7 +95,7 @@ export const addTrailToBookings = (
   return result;
 };
 
-export const checkBookingStatus = (trail: BookTrail): BookedTrailResponse => {
+export const checkBookingStatus = (trail: BookTrail): StatusBookResponse => {
   const booking = bookings.find(
     (x) => x.trailId === trail.trailId && x.optionId === trail.optionId,
   );

@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { BookTrailPayload, checkTrailStatus } from '../trail'
+import { BookTrailPayload, checkBookingStatus } from '../trail'
 import { useSnackbar } from 'notistack'
 
 export const useFetchTrailStatus = () => {
@@ -8,7 +8,7 @@ export const useFetchTrailStatus = () => {
 
   const { mutate, isLoading } = useMutation(
     async ({ trailId, optionId }: BookTrailPayload) => {
-      return checkTrailStatus({ trailId, optionId });
+      return checkBookingStatus({ trailId, optionId });
     },
     {
       mutationKey: ['fetchStatus'],

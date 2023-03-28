@@ -30,6 +30,6 @@ export class AppService {
   }
 
   checkTrailStatus(trailToBook: BookTrail): any {
-    return checkBookingStatus(trailToBook)
+    return checkBookingStatus(trailToBook);
   }
 }

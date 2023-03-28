@@ -59,10 +59,14 @@ export type TrailOption = {
 
 export type TrailBookingStatus = 'success' | 'inProcess' | 'error';
 
-export type BookedTrailResponse = {
+export type StatusBookResponse = {
   status: TrailBookingStatus;
   error?: string;
 };
+
+export type BookedTrailResponse =
+  | StatusBookResponse
+  | (StatusBookResponse & { status: 'success'; data: BookedTrail });
 
 export type TodayWeather = {
   place: TrailPlace;

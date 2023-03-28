@@ -1,5 +1,5 @@
 import { addTrailToBookings } from './bookings';
-import { BookedTrailResponse, Trail, TrailStatus } from '../types';
+import { BookedTrail, BookedTrailResponse, Trail, TrailStatus } from '../types';
 import { BookTrail } from '../types';
 
 export const trails: Trail[] = [
@@ -69,6 +69,55 @@ export const trails: Trail[] = [
       },
     ],
   },
+  {
+    trailId: 'coralbay1',
+    name: 'Coral Bay - Adonis Bath',
+    climb: 301,
+    ratio: 4.2,
+    distance: 7.1,
+    level: 'medium',
+    rank: 63,
+    image: '/coralbay1.jpg',
+    priceMax: 118,
+    priceMin: 60,
+    hours: 2,
+    options: [
+      {
+        optionId: 'coralbay1_1',
+        date: '25 of July',
+        hotel: {
+          name: 'Avlida Hotel',
+          price: 70,
+          ratio: 4,
+        },
+        lunch: {
+          price: 18,
+          dish: 'Chowder with an ax',
+        },
+        taxi: {
+          type: 'economy',
+          price: 30,
+        },
+      },
+      {
+        optionId: 'coralbay1_2',
+        hotel: {
+          name: 'Nissiblu Beach Resort',
+          price: 60,
+          ratio: 3,
+        },
+        date: '29 of July',
+        lunch: {
+          price: 13,
+          dish: 'Сottage cheese with fruits',
+        },
+        taxi: {
+          type: 'comfort',
+          price: 32,
+        },
+      },
+    ],
+  },
 ];
 
 export const bookTrail = (trail: BookTrail): BookedTrailResponse => {
@@ -78,22 +127,24 @@ export const bookTrail = (trail: BookTrail): BookedTrailResponse => {
     (x) => x.optionId === trail.optionId,
   );
 
-  let status: TrailStatus;
+  // eslint-disable-next-line prefer-const
+  let bookedTrail: BookedTrail;
+  let status: TrailStatus = 'booked';
   if (trail.trailId === 'atalanti1') {
     status = 'waiting';
-  }
-
-  const bookedTrail = addTrailToBookings(foundTrail, foundOption, status);
-
-  if (status === 'waiting') {
     setTimeout(() => {
       bookedTrail.status = 'booked';
     }, 5000);
   }
 
-  return {
-    status: status === 'waiting' ? 'inProcess' : 'success',
-  };
+  bookedTrail = addTrailToBookings(foundTrail, foundOption, status);
+
+  return status === 'waiting'
+    ? {
+        status: 'inProcess',
+      }
+    : {
+        status: 'success',
+        data: bookedTrail,
+      };
 };
-
-
