@@ -1,18 +1,27 @@
-import { Box, Paper, Typography } from "@mui/material";
+import { Box, Paper, Typography, useTheme } from "@mui/material";
 
 import { TodayWidgetCard } from "./TodayWidgetCard";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { WeekWeather } from "./WeekDayWeatherCard";
 import { places } from "../constants";
 import { useGetTodayWeather, useGetWeekWeather, useIsWeatherLoading } from "../core/queries/weather";
-import { TrailPlace } from "../../gateway/src/types";
+import { TodayWeather, TrailPlace } from "../../gateway/src/types";
 import dayjs, { Dayjs } from "dayjs";
+import { IconMoodCry } from "@tabler/icons-react";
 
-const ErrorDescription = ({ error }: { error: Error | string }) => {
-  const message = typeof error === "string" ? error : error.message ? error.message : "Weather is currently not available";
+const ErrorDescription = ({ isError, error }: { isError: boolean; error: Error | string }) => {
+  const theme = useTheme();
+  const color = isError ? theme.palette.error.main : theme.palette.text.secondary;
+  const errorMessage = isError
+    ? // @ts-ignore
+      error?.response?.data?.message || error?.message || "Weather is currently now available"
+    : undefined;
   return (
     <Box width="100%" height="100%" display="flex" justifyContent="center" alignItems="center">
-      <Typography variant="h4">{message}</Typography>
+      <Typography sx={{ mr: 2 }} variant="h4" color={color}>
+        {errorMessage}
+      </Typography>
+      <IconMoodCry size={50} color={theme.palette.text.secondary}/>
     </Box>
   );
 };
@@ -27,8 +36,24 @@ function usePrevious<T>(value: T): T | undefined {
 }
 
 type Props = {
-  onDayClick: ( place: TrailPlace, date: Dayjs) => void
-}
+  onDayClick: (place: TrailPlace, date: Dayjs) => void;
+};
+
+type TransformedTodayWeather = {
+  place: TrailPlace;
+  data?: TodayWeather;
+};
+
+const transformData = (data: (TodayWeather | undefined)[]): TransformedTodayWeather[] => {
+  return places.map((place) => {
+    const resp = data.find((d) => d?.place === place);
+
+    return {
+      place,
+      data: resp,
+    };
+  });
+};
 
 export const WeatherWidget = ({ onDayClick }: Props) => {
   const [openNum, setOpened] = useState(-1);
@@ -57,30 +82,30 @@ export const WeatherWidget = ({ onDayClick }: Props) => {
     }
   }, [openNum]);
 
+  const finalData = transformData(data || []);
+
   const todayWidgets = useMemo(() => {
-    return data?.map(({ place, forecast, temperature, description, wind, humidity, feelsLike }, i) => (
+    return finalData?.map(({ place, data }, i) => (
       <TodayWidgetCard
         shouldGrey={i !== openNum && openNum > -1}
         isOpened={i === openNum}
         onOpenClick={handleOpenClick}
         key={place}
         place={place}
-        description={description}
-        forecast={forecast}
-        feelsLike={feelsLike}
-        humidity={humidity}
-        temperature={temperature}
-        wind={wind}
+        data={data}
       />
     ));
   }, [data, handleOpenClick, openNum]);
 
   const isWeatherLoading = useIsWeatherLoading();
 
-  const handleDayClick = useCallback((place: TrailPlace, i: number) => {
-    const date = dayjs('2023-03-30').add(i, 'day')
-    onDayClick(place, date)
-  }, [onDayClick])
+  const handleDayClick = useCallback(
+    (place: TrailPlace, i: number) => {
+      const date = dayjs("2023-03-30").add(i, "day");
+      onDayClick(place, date);
+    },
+    [onDayClick]
+  );
 
   return (
     <>
@@ -88,7 +113,7 @@ export const WeatherWidget = ({ onDayClick }: Props) => {
         <Box sx={{ display: "flex", height: "391px" }}>
           {(isWeatherLoading && !isFetched) || isError ? (
             <Box height="391px" width="100%">
-              {error ? <ErrorDescription error={error} /> : null}
+              {error ? <ErrorDescription isError={isError} error={error} /> : null}
             </Box>
           ) : (
             todayWidgets
