@@ -1,21 +1,9 @@
-import { registerMock } from "@exness-tech/mock-xhr-request";
+import { registerMock } from "@exness-tech/mock-xhr-request/lazy";
 import { axiosInstance } from "./axiosInstance";
 import { TodayWeather, TrailPlace } from "../../gateway/src/types";
 
-const missingWeatherData: TodayWeather[] = [
-  {
-    forecast: "clear-day",
-    place: "Paphos",
-    temperature: 15,
-    description: "Phew, quite windy",
-    wind: 51,
-    humidity: 40,
-    feelsLike: 22,
-  },
-];
-
-registerMock("/api/weather/today:?search", "get", 200, missingWeatherData)
-  .withName("windyDayInPaphos");
+registerMock(() => import("./mocks/weather").then((x) => x.nastyWeather));
+registerMock(() => import("./mocks/weather").then((x) => x.missingWeather));
 
 export const getTodayWeather = async (places: TrailPlace[]): Promise<TodayWeather[]> => {
   const queryParams = `places=${places.join(",")}`;
