@@ -1,4 +1,5 @@
 import { TodayWeather, TrailPlace, WeekDayWeather } from '../types';
+import { generateRandomInteger } from '../utils'
 
 export const todayWeatherData: TodayWeather[] = [
   {
@@ -30,9 +31,6 @@ export const todayWeatherData: TodayWeather[] = [
   },
 ];
 
-function generateRandomInteger(min: number, max: number) {
-  return Math.floor(Math.random() * (max - min)) + min;
-}
 
 const icons = [
   'clear-day',

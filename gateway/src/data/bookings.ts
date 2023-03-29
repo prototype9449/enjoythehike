@@ -9,6 +9,7 @@ import {
   TrailOption,
   TrailStatus,
 } from '../types';
+import { generateRandomInteger } from '../utils';
 
 let globalBookId = 1000;
 const generateId = (): number => {
@@ -68,6 +69,24 @@ const makeCost = (books: BookedTrail[]): BookedTrail[] => {
 
 export const bookings: BookedTrail[] = [];
 
+const getTaxiNumber = () => {
+  const numbers = ['PHK123', 'BAC909', 'THO456', 'TEC093'];
+  const i = generateRandomInteger(0, numbers.length - 1);
+  return numbers[i];
+};
+
+const getPickupTime = () => {
+  const numbers = ['6:30', '7:15', '8:00', '8:30', '9:00', '9:30'];
+  const i = generateRandomInteger(0, numbers.length - 1);
+  return numbers[i];
+};
+
+const getLunchTime = () => {
+  const numbers = ['10:00', '10:15', '10:45', '11:00', '11:30', '11:45'];
+  const i = generateRandomInteger(0, numbers.length - 1);
+  return numbers[i];
+};
+
 export const addTrailToBookings = (
   trail: Trail,
   option: TrailOption,
@@ -95,11 +114,11 @@ export const addTrailToBookings = (
     lunch: {
       dish: option.lunch.dish,
       price: option.lunch.price,
-      pick: '9:30',
+      pick: getLunchTime(),
     },
     taxi: {
-      number: 'PHK123',
-      arrive: '9:00',
+      number: getTaxiNumber(),
+      arrive: getPickupTime(),
       price: option.taxi.price,
     },
   };
