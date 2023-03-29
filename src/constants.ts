@@ -1,1 +1,3 @@
-export const places = ['Limassol', 'Paphos', 'Troodos'] as const
+import { TrailPlace } from '../gateway/src/types'
+
+export const places: TrailPlace[] = ['Limassol', 'Paphos', 'Troodos']

@@ -7,21 +7,19 @@ export type BookTrailPayload = {
   optionId: string
 };
 
-const baseUrl = "http://localhost:3002/api"
-
 export const checkBookingStatus = (id: number): Promise<BookedTrailResponse> => {
-  return axiosInstance.get(`${baseUrl}/bookings/${id}/status`).then((x) => x.data);
+  return axiosInstance.get(`/api/bookings/${id}/status`).then((x) => x.data);
 }
 
 export const getBookings = (): Promise<BookedTrail[]> => {
-  return axiosInstance.get(`${baseUrl}/bookings`).then((x) => x.data);
+  return axiosInstance.get(`/api/bookings`).then((x) => x.data);
 };
 
 export const bookTrail = (payload: BookTrailPayload): Promise<BookedTrailResponse> => {
-  return axiosInstance.post(`${baseUrl}/bookings`, payload).then((x) => x.data);
+  return axiosInstance.post(`/api/bookings`, payload).then((x) => x.data);
 };
 
 export const findTrails = (payload: BookingFormValue): Promise<Trail[]> => {
   const queryParams = queryString.stringify(payload);
-  return axiosInstance.get(`${baseUrl}/trails?${queryParams}`).then((x) => x.data);
+  return axiosInstance.get(`/api/trails?${queryParams}`).then((x) => x.data);
 };

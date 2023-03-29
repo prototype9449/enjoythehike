@@ -10,7 +10,7 @@ export class AppController {
 
   @Get('/weather/today')
   async getWeather(): Promise<Record<string, any>> {
-    await waitForMs(1000);
+    //await waitForMs(1000);
     return this.appService.getTodayWeather();
   }
 

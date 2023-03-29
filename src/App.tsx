@@ -15,9 +15,9 @@ import { getBookings } from "./core/trail";
 import dayjs, { Dayjs } from "dayjs";
 import { TrailPlace } from "../gateway/src/types";
 
-setDefaultOptions({
-  baseUrl: "http://localhost:3002",
-});
+// setDefaultOptions({
+//   baseUrl: "http://localhost:3002",
+// });
 
 const queryClient = new QueryClient({
   defaultOptions: {
