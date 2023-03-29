@@ -10,9 +10,9 @@ import { WeatherWidget } from "./WeatherWidget";
 import { BookingForm, ChosenDay } from "./BookingForm/BookingForm";
 import { Box, CircularProgress, Paper, Tab, Tabs, Typography } from "@mui/material";
 import { Bookings } from "./Bookings/Bookings";
-import { getBookings } from "./core/bookings";
 import dayjs, { Dayjs } from "dayjs";
 import { TrailPlace } from "../gateway/src/types";
+import { useGetBookings } from "./core/queries/useGetBookins";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -44,17 +44,16 @@ const BookingTabs = ({ value, onChange }: BookingTasProps) => {
 const MainApp = () => {
   const [value, setValue] = useState(0);
   const [chosenDay, setChosenDay] = useState<ChosenDay>({ place: "any", day: dayjs("2023-03-30") } as const);
-
-  const queryClient = useQueryClient();
+  const { refetch } = useGetBookings();
   useEffect(() => {
-    queryClient.prefetchQuery({
-      queryKey: ["bookings"],
-      queryFn: getBookings,
-    });
-  }, [queryClient]);
+    refetch();
+  }, [refetch]);
 
   const isFetching = !!useIsFetching({
-    predicate: (q) => q.state.status === "loading" || (q.queryKey.includes("trails") && q.state.fetchStatus === "fetching"),
+    predicate: (q) =>
+      q.state.status === "loading" ||
+      (q.queryKey.includes("trails") && q.state.fetchStatus === "fetching") ||
+      (q.queryKey.includes("bookings") && q.state.fetchStatus === "fetching"),
   });
   const isMutating = !!useIsMutating({
     predicate: (q) => q.state.status === "loading" && !q.options.mutationKey?.includes("fetchStatus"),
@@ -87,7 +86,9 @@ const MainApp = () => {
           {value === 1 ? <Bookings /> : null}
         </Box>
       </Box>
-      {(isFetching || isMutating) && <CircularProgress size={60} sx={{ position: "fixed", right: 70, bottom: 70 }} />}
+      {(isFetching || isMutating) && (
+        <CircularProgress size={60} sx={{ position: "fixed", right: 70, bottom: 70 }} />
+      )}
     </Box>
   );
 };
