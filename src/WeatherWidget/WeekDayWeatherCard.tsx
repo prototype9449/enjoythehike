@@ -19,7 +19,7 @@ const WeekDayWeatherCard = ({ weekDay, temperature, date, icon, onClick }: WeekD
   return (
     <Button onClick={onClick} sx={{ p: 0, pt:2, textTransform: 'none', color: 'inherit', width: "100%", display: "flex", alignItems: "center", flexDirection: "column" }}>
       <Typography variant="h6">
-        {weekDay || placeHolder} {date || placeHolder}
+        {weekDay ?? placeHolder} {date ?? placeHolder}
       </Typography>
       <Box mt={1} mb={1} mr={2} ml={2}>
         <WeatherIcon key={icon} width={50} id={icon} animated={false} />
@@ -35,7 +35,7 @@ const WeekDayWeatherCard = ({ weekDay, temperature, date, icon, onClick }: WeekD
         }}
       >
         <Typography color="black" variant="body1">
-          {temperature.day || placeHolder}°C
+          {temperature.day ?? placeHolder}°C
         </Typography>
       </Box>
       <Box
@@ -49,7 +49,7 @@ const WeekDayWeatherCard = ({ weekDay, temperature, date, icon, onClick }: WeekD
         }}
       >
         <Typography color="white" variant="body1">
-          {temperature.night || placeHolder}°C
+          {temperature.night ?? placeHolder}°C
         </Typography>
       </Box>
     </Button>

@@ -12,7 +12,7 @@ export const WeatherIcon = ({ animated, id, width }: IconProps) => {
       beforeInjection={(svg) => {
         if (width) svg.setAttribute("style", `width: ${width}px`);
       }}
-      src={`/${animated ? "animated" : "static"}-icons/${id}.svg`}
+      src={`/${animated ? "static" : "static"}-icons/${id}.svg`}
     />
   );
 };

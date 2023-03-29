@@ -20,13 +20,13 @@ export const todayWeatherData: TodayWeather[] = [
     feelsLike: 14,
   },
   {
-    forecast: 'clear-day',
+    forecast: 'overcast-day-snow',
     place: 'Troodos',
-    temperature: 5,
-    description: 'Clear sky',
-    wind: 21,
-    humidity: 40,
-    feelsLike: 3,
+    temperature: 8,
+    description: 'Cloudy and snow',
+    wind: 24,
+    humidity: 43,
+    feelsLike: 4,
   },
 ];
 

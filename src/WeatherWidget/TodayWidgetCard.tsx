@@ -32,25 +32,25 @@ const Weather = ({ place, temperature, forecast, description, wind, humidity, fe
   return (
     <Box width="300px" p={2} pb={0}>
       <Box mb={1} justifyContent="center">
-        <Typography variant="h4">{place || "-"}</Typography>
+        <Typography variant="h4">{place ?? placeHolder}</Typography>
       </Box>
       <Box>{memoIcon}</Box>
       <Box m={2}>
-        <Typography variant="h5">{temperature || placeHolder}°C</Typography>
-        <Typography variant="h6">{description || placeHolder}</Typography>
+        <Typography variant="h5">{temperature ?? placeHolder}°C</Typography>
+        <Typography variant="h6">{description ?? placeHolder}</Typography>
       </Box>
       <Box display="flex" flexDirection="row" justifyContent="space-between">
         <Box>
           <Typography variant="body1">Wind</Typography>
-          <Typography variant="h6">{wind || placeHolder} fps</Typography>
+          <Typography variant="h6">{wind ?? placeHolder} fps</Typography>
         </Box>
         <Box>
           <Typography variant="body1">Humidity</Typography>
-          <Typography variant="h6">{humidity || placeHolder}%</Typography>
+          <Typography variant="h6">{humidity ?? placeHolder}%</Typography>
         </Box>
         <Box>
           <Typography variant="body1">Feels like</Typography>
-          <Typography variant="h6">{feelsLike || placeHolder}°C</Typography>
+          <Typography variant="h6">{feelsLike ?? placeHolder}°C</Typography>
         </Box>
       </Box>
     </Box>

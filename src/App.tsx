@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { createRef, useCallback, useEffect, useRef, useState } from "react";
 import { LocalizationProvider } from "@mui/x-date-pickers-pro";
 import { setDefaultOptions } from "@exness-tech/mock-xhr-request";
 import { AdapterDayjs } from "@mui/x-date-pickers-pro/AdapterDayjs";
@@ -58,14 +58,19 @@ const MainApp = () => {
     });
   }, [queryClient]);
 
-  const isFetching = useIsFetching({
+  const isFetching = !!useIsFetching({
     predicate: (q) => q.state.status === "loading" || (q.queryKey.includes("trails") && q.state.fetchStatus === "fetching"),
   });
-  const isMutating = useIsMutating({
+  const isMutating = !!useIsMutating({
     predicate: (q) => q.state.status === "loading" && !q.options.mutationKey?.includes("fetchStatus"),
   });
+  const tabRef = useRef(null);
 
   const handleDayClick = useCallback((place: TrailPlace, date: Dayjs) => {
+    if (tabRef.current) {
+      // @ts-ignore
+      tabRef.current.scrollIntoView({ behavior: "smooth" });
+    }
     setChosenDay({
       day: date,
       place,
@@ -73,18 +78,18 @@ const MainApp = () => {
   }, []);
 
   return (
-    <Box width="100%">
+    <Box width="100%" mt="50px" mb={"600px"}>
       <Typography textAlign="center" mt="50px" variant="h1" fontFamily="OrangeJuice" color={"#3457e6d4"}>
         Enjoy the hike
       </Typography>
-      <Box width="1280px" ml="auto" mr="auto" mt="50px" mb="200px">
+      <Box width="1280px" ml="auto" mr="auto" mt="50px">
         <WeatherWidget onDayClick={handleDayClick} />
-        <Box sx={{ width: "100%", bgcolor: "background.paper" }}>
+        <Box sx={{ width: "100%", bgcolor: "background.paper" }} ref={tabRef}>
           <Paper elevation={5} sx={{ mb: 2 }}>
             <BookingTabs value={value} onChange={(v) => setValue(v)} />
           </Paper>
-          {value === 0 && <BookingForm chosenDay={chosenDay} />}
-          {value === 1 && <Bookings />}
+          {value === 0 ? <BookingForm chosenDay={chosenDay} /> : null}
+          {value === 1 ? <Bookings /> : null}
         </Box>
       </Box>
       {(isFetching || isMutating) && <CircularProgress size={60} sx={{ position: "fixed", right: 70, bottom: 70 }} />}
