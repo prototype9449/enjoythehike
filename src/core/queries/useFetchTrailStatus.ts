@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { checkBookingStatus } from '../bookings'
+import { checkBookingStatus, getBookings } from '../bookings'
 import { useSnackbar } from 'notistack'
 
 export const useFetchTrailStatus = () => {
@@ -18,9 +18,7 @@ export const useFetchTrailStatus = () => {
             mutate(id)
           }, 3000)
         } else if(data.status === 'success') {
-          queryClient.invalidateQueries({
-            queryKey: ['bookings']
-          });
+          queryClient.fetchQuery({ queryFn: getBookings, queryKey: ['bookings']})
           enqueueSnackbar('You have successfully booked a trail');
         }
       },
