@@ -16,9 +16,9 @@ export const TrailDetails = ({ trailName, image, taxi, lunch, hotel, date, trail
       if (data.status === "success") {
         enqueueSnackbar(`You booked a trail ${trailName}`, { variant: "success" });
       } else if (data.status === "in-process") {
-        enqueueSnackbar(`We are process your request for ${trailName}`, { variant: "info" });
+        enqueueSnackbar(`We are processing your request for ${trailName}`, { variant: "info" });
       } else if (data.status === "error") {
-        enqueueSnackbar(data.message || "Oops, some error occurred while processing your order");
+        enqueueSnackbar(data.message || "Oops, some error occurred while processing your order", { variant: "error" });
       }
     });
   };

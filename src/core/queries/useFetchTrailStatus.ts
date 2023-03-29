@@ -1,6 +1,6 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { checkBookingStatus, getBookings } from '../bookings'
-import { useSnackbar } from 'notistack'
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { checkBookingStatus, getBookings } from "../bookings";
+import { useSnackbar } from "notistack";
 
 export const useFetchTrailStatus = () => {
   const queryClient = useQueryClient();
@@ -11,22 +11,22 @@ export const useFetchTrailStatus = () => {
       return checkBookingStatus(id);
     },
     {
-      mutationKey: ['fetchStatus'],
-      onSuccess: (data, id) =>{
-        if(data.status === 'in-process') {
+      mutationKey: ["fetchStatus"],
+      onSuccess: (data, id) => {
+        if (data.status === "in-process") {
           setTimeout(() => {
-            mutate(id)
-          }, 3000)
-        } else if(data.status === 'success') {
-          queryClient.fetchQuery({ queryFn: getBookings, queryKey: ['bookings']})
-          enqueueSnackbar('You have successfully booked a trail');
+            mutate(id);
+          }, 3000);
+        } else if (data.status === "success") {
+          queryClient.fetchQuery({ queryFn: getBookings, queryKey: ["bookings"] });
+          enqueueSnackbar("You have successfully booked a trail", { variant: "success" });
         }
       },
       onError: (e, bookPayload, context) => {
-        enqueueSnackbar("Oops, some error occurred while fetching the order status");
+        enqueueSnackbar("Oops, some error occurred while fetching the order status", { variant: "error" });
       },
     }
   );
 
   return { checkTrailStatus: mutate, isLoading };
-}
+};
