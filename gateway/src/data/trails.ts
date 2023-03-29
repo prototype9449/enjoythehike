@@ -167,6 +167,55 @@ export const trails: Trail[] = [
       },
     ],
   },
+  {
+    trailId: 'madari1',
+    name: 'Madari Nature Trail',
+    climb: 510,
+    ratio: 3.2,
+    distance: 11.2,
+    level: 'low',
+    rank: 70,
+    image: '/madari1.jpg',
+    priceMax: 128,
+    priceMin: 96,
+    hours: 3,
+    options: [
+      {
+        optionId: 'madari1_1',
+        date: '2 of April',
+        hotel: {
+          name: 'Nissi Beach Resort',
+          price: 60,
+          ratio: 4,
+        },
+        lunch: {
+          price: 28,
+          dish: 'Caviar with bread',
+        },
+        taxi: {
+          type: 'comfort',
+          price: 40,
+        },
+      },
+      {
+        optionId: 'madari1_2',
+        hotel: {
+          name: 'Amarande',
+          price: 40,
+          ratio: 3,
+        },
+        date: '4 of April',
+        lunch: {
+          price: 20,
+          dish: 'Chicken with rise',
+        },
+        taxi: {
+          type: 'comfort',
+          price: 36,
+        },
+      },
+    ],
+  },
 ];
 
 export const bookTrail = (trail: BookTrail): BookedTrailResponse => {

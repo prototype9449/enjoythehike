@@ -16,10 +16,10 @@ type Props = {
 const NoData = () => {
   return (
     <Box m="auto" display="flex" alignItems="center">
-      <Typography sx={{ mr: 2 }} variant="h5">
+      <Typography sx={{ mr: 2 }} variant="h4">
         No data
       </Typography>
-      <IconCircleOff size={30} />
+      <IconCircleOff size={35} />
     </Box>
   );
 };

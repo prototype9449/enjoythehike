@@ -28,7 +28,7 @@ export const TrailDetails = ({ trailName, image, taxi, lunch, hotel, date, trail
   return (
     <Box width="100%" display="flex" alignItems="center" justifyContent="space-between">
       <Box display="flex">
-        <Row name="When" mr={3} flex="initial">
+        <Row name="When" mr={3} flex="initial" minWidth={"166px"}>
           <ValuePart>{date}</ValuePart>
         </Row>
         <Row name="Taxi" mr={3} flex="initial">

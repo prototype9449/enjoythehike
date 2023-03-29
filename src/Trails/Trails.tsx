@@ -3,7 +3,7 @@ import {
   AccordionDetails,
   AccordionProps,
   AccordionSummary,
-  Box,
+  Box, BoxProps,
   Button,
   Rating,
   styled,
@@ -18,14 +18,14 @@ import { Row, ValuePart } from "./shared";
 import { useGetTrails } from "../core/queries/useGetTrails";
 import { TrailLevel, TrailOption } from "../../gateway/src/types";
 
-const Level = ({ level }: { level: TrailLevel }) => {
+const Level = ({ level, ...other }: { level: TrailLevel } & BoxProps) => {
   const {
     palette: { error, success, warning },
   } = useTheme();
   const fill = level === "low" ? success.main : level === "medium" ? warning.light : error.main;
 
   return (
-    <Box mb={1} ml={2}>
+    <Box mb={1} {...other}>
       <ReactSVG
         beforeInjection={(svg) => {
           svg.setAttribute("style", `size: 26px`);
@@ -90,7 +90,7 @@ export const Trails = () => {
                 <img src={image} width={"100%"} height="100%" alt={name} style={{ objectFit: "cover" }} />
               </Box>
               <Box ml={5} flex={1} display={"flex"}>
-                <Box height="100%" display="flex" flexDirection="column" justifyContent="space-between">
+                <Box width={'290px'} maxWidth={'290px'} height="100%" display="flex" flexDirection="column" justifyContent="space-between">
                   <Row name="Name">
                     <ValuePart fontWeight="bold">{name}</ValuePart>
                   </Row>
@@ -102,16 +102,16 @@ export const Trails = () => {
                   </Row>
                 </Box>
                 <Box ml={5} height="100%" display="flex" flexDirection="column" justifyContent="space-between">
-                  <Row name="Price range">
+                  <Row name="Price range" sx={{minWidth: '230px'}}>
                     <ValuePart sx={{ mr: 1 }}>{priceMin} $</ValuePart>-<ValuePart sx={{ ml: 1 }}>{priceMax} $</ValuePart>
                   </Row>
                   <Row name="Hours">
                     <ValuePart>{hours} h</ValuePart>
                   </Row>
-                  <Row name="Level">
+                  <Row name="Level" alignItems="center" mt={-1}>
                     <Box display="flex" alignItems="center">
+                      <Level level={level} mr={2}/>
                       <ValuePart>{level[0].toUpperCase() + level.slice(1)}</ValuePart>
-                      <Level level={level} />
                     </Box>
                   </Row>
                 </Box>
