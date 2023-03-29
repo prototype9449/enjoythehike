@@ -1,4 +1,4 @@
-import { bookTrail, BookTrailPayload } from "../trail";
+import { bookHike, BookTrailPayload } from "../bookings";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useFetchTrailStatus } from "./useFetchTrailStatus";
 import { BookedTrail } from "../../../gateway/src/types";
@@ -15,7 +15,7 @@ export const useBookTrail = () => {
 
   const { mutateAsync, isLoading } = useMutation(
     async ({ trailId, optionId }: MutatePayload) => {
-      return bookTrail({ trailId, optionId });
+      return bookHike({ trailId, optionId });
     },
     {
       onMutate: ({ trailId, optionId, trailName, date, image }) => {

@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { checkBookingStatus } from '../trail'
+import { checkBookingStatus } from '../bookings'
 import { useSnackbar } from 'notistack'
 
 export const useFetchTrailStatus = () => {

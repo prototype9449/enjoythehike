@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { findTrails } from "../trail";
+import { findTrails } from "../trails";
 import { BookingFormValue } from "../../../gateway/src/types";
 
 export const useGetTrails = (payload?: BookingFormValue) => {

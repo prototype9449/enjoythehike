@@ -1,6 +1,5 @@
-import React, { createRef, useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { LocalizationProvider } from "@mui/x-date-pickers-pro";
-import { setDefaultOptions } from "@exness-tech/mock-xhr-request";
 import { AdapterDayjs } from "@mui/x-date-pickers-pro/AdapterDayjs";
 import { QueryClient, QueryClientProvider, useIsFetching, useIsMutating, useQueryClient } from "@tanstack/react-query";
 import { SnackbarProvider } from "notistack";
@@ -11,13 +10,9 @@ import { WeatherWidget } from "./WeatherWidget";
 import { BookingForm, ChosenDay } from "./BookingForm/BookingForm";
 import { Box, CircularProgress, Paper, Tab, Tabs, Typography } from "@mui/material";
 import { Bookings } from "./Bookings/Bookings";
-import { getBookings } from "./core/trail";
+import { getBookings } from "./core/bookings";
 import dayjs, { Dayjs } from "dayjs";
 import { TrailPlace } from "../gateway/src/types";
-
-// setDefaultOptions({
-//   baseUrl: "http://localhost:3002",
-// });
 
 const queryClient = new QueryClient({
   defaultOptions: {

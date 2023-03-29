@@ -42,7 +42,7 @@ const Weather = ({ place, temperature, forecast, description, wind, humidity, fe
       <Box display="flex" flexDirection="row" justifyContent="space-between">
         <Box>
           <Typography variant="body1">Wind</Typography>
-          <Typography variant="h6">{wind ?? placeHolder} fps</Typography>
+          <Typography variant="h6">{wind ?? placeHolder} km/h</Typography>
         </Box>
         <Box>
           <Typography variant="body1">Humidity</Typography>
